@@ -19,34 +19,41 @@
   .footer-top {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
     gap: 40px;
     margin-bottom: 60px;
     padding-bottom: 40px;
     border-bottom: 1px solid {{ section.settings.border_color }};
+    position: relative;
+  }
+
+  /* Separador vertical entre logo y newsletter */
+  .footer-top::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: {{ section.settings.border_color }};
+    transform: translateX(-50%);
   }
 
   /* Logo - Izquierda */
   .footer-logo {
+    flex: 1;
     text-align: left;
-    min-width: 200px;
   }
 
   .footer-logo .logo-img {
-    max-width: 120px;
+    max-width: {{ section.settings.logo_width }}px;
     margin-bottom: 15px;
   }
 
   .footer-logo .logo-img img {
     width: 100%;
     height: auto;
-  }
-
-  .footer-logo .mustang-text {
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 3px;
     display: block;
   }
 
@@ -59,7 +66,6 @@
   /* Newsletter - Derecha */
   .footer-newsletter {
     flex: 1;
-    min-width: 280px;
     text-align: right;
   }
 
@@ -181,15 +187,23 @@
     }
     .footer-top {
       flex-direction: column;
+      gap: 30px;
+    }
+    .footer-top::after {
+      display: none;
     }
     .footer-newsletter {
       text-align: left;
+      width: 100%;
     }
     .footer-newsletter .checkbox label {
       justify-content: flex-start;
     }
     .newsletter-form {
       justify-content: flex-start;
+    }
+    .footer-logo {
+      width: 100%;
     }
   }
 
@@ -209,17 +223,19 @@
 <footer class="footer-mustang">
   <div class="page-width">
     
-    <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) -->
+    <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) con separador vertical -->
     <div class="footer-top">
       
-      <!-- Logo Mustang - IZQUIERDA -->
+      <!-- Logo Mustang - IZQUIERDA (espacio para tu foto) -->
       <div class="footer-logo">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
-            <img src="{{ section.settings.logo | img_url: '300x' }}" alt="MUSTANG">
+            <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
           </div>
         {% else %}
-          <span class="mustang-text">MUSTANG</span>
+          <div class="logo-img" style="background-color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+            Sube tu logo aquí
+          </div>
         {% endif %}
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
@@ -305,12 +321,23 @@
     },
     {
       "type": "header",
-      "content": "Logo"
+      "content": "Logo Mustang"
     },
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo de Mustang"
+      "label": "Logo de Mustang",
+      "info": "Sube la imagen del logo de Mustang"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "label": "Ancho del logo",
+      "default": 150
     },
     {
       "type": "text",
@@ -368,7 +395,8 @@
         {
           "type": "link_list",
           "id": "menu",
-          "label": "Seleccionar menú"
+          "label": "Seleccionar menú",
+          "info": "Crea tus menús en Online Store > Navegación"
         }
       ]
     }
