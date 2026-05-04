@@ -40,7 +40,7 @@
     transform: translateX(-50%);
   }
 
-  /* Logo - Izquierda */
+  /* Logo - Izquierda (Desktop) */
   .footer-logo {
     flex: 1;
     text-align: left;
@@ -63,7 +63,7 @@
     margin-top: 10px;
   }
 
-  /* Newsletter - Derecha - ESTILO EXACTO COMO LA IMAGEN */
+  /* Newsletter - Derecha */
   .footer-newsletter {
     flex: 1;
     text-align: left;
@@ -82,7 +82,6 @@
     color: {{ section.settings.text_color | append: 'cc' }};
   }
 
-  /* Checkbox con estilo de lista (con guión) */
   .footer-newsletter .checkbox {
     margin: 20px 0;
     font-size: 12px;
@@ -106,7 +105,6 @@
     flex: 1;
   }
 
-  /* Estilo del campo de correo */
   .newsletter-form {
     display: flex;
     gap: 10px;
@@ -156,7 +154,7 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* ========== PARTE INFERIOR: 5 Menús SIN separadores ========== */
+  /* ========== PARTE INFERIOR: Menús en Desktop (5 columnas) ========== */
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -195,44 +193,115 @@
     text-decoration: underline;
   }
 
-  /* Responsive */
-  @media (max-width: 1000px) {
-    .footer-menus {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+  /* Logo móvil (oculto en desktop) */
+  .footer-logo-mobile {
+    display: none;
+  }
+
+  /* ========== ESTILOS PARA MÓVIL ========== */
+  @media (max-width: 768px) {
+    /* Ocultar el logo de desktop */
+    .footer-logo {
+      display: none;
     }
+
+    /* Mostrar logo al final del footer */
+    .footer-logo-mobile {
+      display: block;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid {{ section.settings.border_color }};
+      text-align: center;
+    }
+
+    .footer-logo-mobile .logo-img {
+      max-width: 120px;
+      margin: 0 auto 15px;
+    }
+
+    .footer-logo-mobile .logo-img img {
+      width: 100%;
+      height: auto;
+    }
+
+    .footer-logo-mobile .country {
+      font-size: 12px;
+      color: {{ section.settings.text_color | append: 'cc' }};
+    }
+
+    /* Menús en acordeón (desplegables) */
+    .footer-menus {
+      display: block;
+    }
+
+    .footer-menu-col {
+      border-bottom: 1px solid {{ section.settings.border_color }};
+    }
+
+    .footer-menu-col h3 {
+      margin: 0;
+      padding: 15px 0;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .footer-menu-col h3::after {
+      content: "+";
+      font-size: 20px;
+      font-weight: 300;
+      transition: transform 0.3s;
+    }
+
+    .footer-menu-col.active h3::after {
+      content: "−";
+    }
+
+    .footer-menu-col ul {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding: 0;
+    }
+
+    .footer-menu-col.active ul {
+      max-height: 500px;
+      padding-bottom: 20px;
+    }
+
+    .footer-menu-col li {
+      margin-bottom: 12px;
+    }
+
+    /* Newsletter en móvil */
     .footer-top {
       flex-direction: column;
       gap: 30px;
     }
+
     .footer-top::after {
       display: none;
     }
+
     .footer-newsletter {
+      width: 100%;
       text-align: left;
-      width: 100%;
     }
-    .footer-logo {
-      width: 100%;
-    }
+
     .newsletter-form {
       flex-direction: column;
       align-items: stretch;
     }
+
     .newsletter-form button {
       width: 100%;
     }
-  }
 
-  @media (max-width: 700px) {
-    .footer-menus {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 500px) {
-    .footer-menus {
-      grid-template-columns: 1fr;
+    .footer-newsletter .checkbox label {
+      justify-content: flex-start;
     }
   }
 </style>
@@ -243,7 +312,7 @@
     <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) con separador vertical -->
     <div class="footer-top">
       
-      <!-- Logo Mustang - IZQUIERDA -->
+      <!-- Logo Mustang - IZQUIERDA (solo desktop) -->
       <div class="footer-logo">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
@@ -257,12 +326,11 @@
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
       
-      <!-- Newsletter - DERECHA (exactamente como la imagen) -->
+      <!-- Newsletter - DERECHA -->
       <div class="footer-newsletter">
         <h3>{{ section.settings.newsletter_title }}</h3>
         <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
         
-        <!-- Checkbox con guión -->
         <div class="checkbox">
           <label>
             <input type="checkbox" id="newsletter_consent">
@@ -270,7 +338,6 @@
           </label>
         </div>
         
-        <!-- Campo de correo electrónico y botón ENVIAR -->
         {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="email-field">
@@ -283,12 +350,12 @@
       
     </div>
     
-    <!-- PARTE INFERIOR: 5 Menús SIN líneas divisorias -->
-    <div class="footer-menus">
+    <!-- PARTE INFERIOR: Menús -->
+    <div class="footer-menus" id="footer-menus-mobile">
       {%- for block in section.blocks -%}
         <div class="footer-menu-col" {{ block.shopify_attributes }}>
           {%- if block.settings.heading != blank -%}
-            <h3>{{ block.settings.heading }}</h3>
+            <h3 class="menu-title">{{ block.settings.heading }}</h3>
           {%- endif -%}
           
           {%- if block.type == 'link_list' and block.settings.menu != blank -%}
@@ -301,9 +368,37 @@
         </div>
       {%- endfor -%}
     </div>
+
+    <!-- Logo MÓVIL (aparece al final del footer) -->
+    <div class="footer-logo-mobile">
+      {% if section.settings.logo != blank %}
+        <div class="logo-img">
+          <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
+        </div>
+      {% else %}
+        <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
+      {% endif %}
+      <div class="country">{{ section.settings.country_text }}</div>
+    </div>
     
   </div>
 </footer>
+
+<script>
+  // Script para acordeón en móvil
+  document.addEventListener('DOMContentLoaded', function() {
+    var menuCols = document.querySelectorAll('.footer-menu-col');
+    
+    menuCols.forEach(function(col) {
+      var title = col.querySelector('.menu-title');
+      if (title) {
+        title.addEventListener('click', function() {
+          col.classList.toggle('active');
+        });
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
