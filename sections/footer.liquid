@@ -15,7 +15,7 @@
     padding: 0 20px;
   }
 
-  /* ========== PARTE SUPERIOR: Newsletter + Logo ========== */
+  /* ========== PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) ========== */
   .footer-top {
     display: flex;
     justify-content: space-between;
@@ -27,10 +27,40 @@
     border-bottom: 1px solid {{ section.settings.border_color }};
   }
 
-  /* Newsletter - Izquierda */
+  /* Logo - Izquierda */
+  .footer-logo {
+    text-align: left;
+    min-width: 200px;
+  }
+
+  .footer-logo .logo-img {
+    max-width: 120px;
+    margin-bottom: 15px;
+  }
+
+  .footer-logo .logo-img img {
+    width: 100%;
+    height: auto;
+  }
+
+  .footer-logo .mustang-text {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    display: block;
+  }
+
+  .footer-logo .country {
+    font-size: 12px;
+    color: {{ section.settings.text_color | append: 'cc' }};
+    margin-top: 10px;
+  }
+
+  /* Newsletter - Derecha */
   .footer-newsletter {
     flex: 1;
     min-width: 280px;
+    text-align: right;
   }
 
   .footer-newsletter h3 {
@@ -53,6 +83,7 @@
   .footer-newsletter .checkbox label {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
     cursor: pointer;
   }
@@ -67,6 +98,7 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .newsletter-form input {
@@ -97,36 +129,6 @@
   .newsletter-form button:hover {
     background-color: {{ section.settings.text_color }};
     color: {{ section.settings.bg_color }};
-  }
-
-  /* Logo - Derecha */
-  .footer-logo {
-    text-align: right;
-    min-width: 200px;
-  }
-
-  .footer-logo .logo-img {
-    max-width: 120px;
-    margin-left: auto;
-    margin-bottom: 15px;
-  }
-
-  .footer-logo .logo-img img {
-    width: 100%;
-    height: auto;
-  }
-
-  .footer-logo .mustang-text {
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    display: block;
-  }
-
-  .footer-logo .country {
-    font-size: 12px;
-    color: {{ section.settings.text_color | append: 'cc' }};
-    margin-top: 10px;
   }
 
   /* ========== PARTE INFERIOR: 5 Menús ========== */
@@ -169,20 +171,6 @@
     text-decoration: underline;
   }
 
-  /* Texto para contacto y atención */
-  .footer-menu-col p {
-    margin: 0 0 10px 0;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .hours {
-    font-size: 11px;
-    color: {{ section.settings.text_color | append: 'aa' }};
-    margin-top: 15px;
-    line-height: 1.6;
-  }
-
   /* Responsive */
   @media (max-width: 1000px) {
     .footer-menus {
@@ -194,11 +182,14 @@
     .footer-top {
       flex-direction: column;
     }
-    .footer-logo {
+    .footer-newsletter {
       text-align: left;
     }
-    .footer-logo .logo-img {
-      margin-left: 0;
+    .footer-newsletter .checkbox label {
+      justify-content: flex-start;
+    }
+    .newsletter-form {
+      justify-content: flex-start;
     }
   }
 
@@ -218,10 +209,22 @@
 <footer class="footer-mustang">
   <div class="page-width">
     
-    <!-- PARTE SUPERIOR: Newsletter (izquierda) + Logo (derecha) -->
+    <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) -->
     <div class="footer-top">
       
-      <!-- Newsletter -->
+      <!-- Logo Mustang - IZQUIERDA -->
+      <div class="footer-logo">
+        {% if section.settings.logo != blank %}
+          <div class="logo-img">
+            <img src="{{ section.settings.logo | img_url: '300x' }}" alt="MUSTANG">
+          </div>
+        {% else %}
+          <span class="mustang-text">MUSTANG</span>
+        {% endif %}
+        <div class="country">{{ section.settings.country_text }}</div>
+      </div>
+      
+      <!-- Newsletter - DERECHA -->
       <div class="footer-newsletter">
         <h3>{{ section.settings.newsletter_title }}</h3>
         <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
@@ -240,17 +243,6 @@
         </div>
       </div>
       
-      <!-- Logo Mustang -->
-      <div class="footer-logo">
-        {% if section.settings.logo != blank %}
-          <div class="logo-img">
-            <img src="{{ section.settings.logo | img_url: '300x' }}" alt="MUSTANG">
-          </div>
-        {% else %}
-          <span class="mustang-text">MUSTANG</span>
-        {% endif %}
-        <div class="country">{{ section.settings.country_text }}</div>
-      </div>
     </div>
     
     <!-- PARTE INFERIOR: 5 Menús -->
@@ -267,17 +259,6 @@
                 <li><a href="{{ link.url }}">{{ link.title }}</a></li>
               {%- endfor -%}
             </ul>
-          {%- endif -%}
-          
-          {%- if block.type == 'contact_info' -%}
-            <div>{{ block.settings.contact_content }}</div>
-          {%- endif -%}
-          
-          {%- if block.type == 'customer_service' -%}
-            <div>{{ block.settings.service_content }}</div>
-            {% if block.settings.show_hours %}
-              <div class="hours">{{ block.settings.hours_content }}</div>
-            {% endif %}
           {%- endif -%}
         </div>
       {%- endfor -%}
@@ -324,6 +305,21 @@
     },
     {
       "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo de Mustang"
+    },
+    {
+      "type": "text",
+      "id": "country_text",
+      "label": "Texto de ubicación",
+      "default": "Estás comprando en: España"
+    },
+    {
+      "type": "header",
       "content": "Newsletter"
     },
     {
@@ -355,21 +351,6 @@
       "id": "checkbox_text",
       "label": "Texto del checkbox",
       "default": "Deseo suscribirme a la newsletter de Mtng. He leído y acepto la política de privacidad."
-    },
-    {
-      "type": "header",
-      "content": "Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo de Mustang"
-    },
-    {
-      "type": "text",
-      "id": "country_text",
-      "label": "Texto de ubicación",
-      "default": "Estás comprando en: España"
     }
   ],
   "blocks": [
