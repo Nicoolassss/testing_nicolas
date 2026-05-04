@@ -247,16 +247,22 @@
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
-  /* ========== TRUSTPILOT - CENTRADO Y MÁS GRANDE ========== */
-  .footer-trustpilot {
+  /* ========== TRUSTPILOT - CENTRADO (FORZADO) ========== */
+  .footer-trustpilot-container {
+    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     margin-top: 40px;
     margin-bottom: 20px;
+  }
+
+  .footer-trustpilot {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
     text-align: center;
-    width: 100%;
   }
 
   .footer-trustpilot .trust-text {
@@ -400,7 +406,7 @@
       justify-content: flex-start;
     }
 
-    /* Trustpilot en móvil - más grande también */
+    /* Trustpilot en móvil - centrado */
     .footer-trustpilot {
       flex-direction: column;
       gap: 15px;
@@ -511,15 +517,17 @@
     </div>
   </div>
 
-  <!-- TRUSTPILOT - CENTRADO Y CON IMAGEN MÁS GRANDE -->
+  <!-- TRUSTPILOT - CENTRADO CON CONTAINER FORZADO -->
   <div class="page-width">
     <div class="footer-inner">
-      <div class="footer-trustpilot">
-        {% if section.settings.trustpilot_image != blank %}
-          <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-        {% endif %}
-        <div class="trust-text">
-          {{ section.settings.trustpilot_text }}
+      <div class="footer-trustpilot-container">
+        <div class="footer-trustpilot">
+          {% if section.settings.trustpilot_image != blank %}
+            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+          {% endif %}
+          <div class="trust-text">
+            {{ section.settings.trustpilot_text }}
+          </div>
         </div>
       </div>
     </div>
