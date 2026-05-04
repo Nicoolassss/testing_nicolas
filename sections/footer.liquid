@@ -12,6 +12,11 @@
   .footer-mustang .page-width {
     max-width: 1400px;
     margin: 0 auto;
+    padding: 0;
+  }
+
+  /* Contenedor interno con padding lateral */
+  .footer-inner {
     padding: 0 20px;
   }
 
@@ -41,25 +46,30 @@
     transform: translateX(-50%);
   }
 
-  /* Eliminar márgenes laterales del contenedor para que los bordes lleguen al final */
-  .footer-menus-container {
-    margin: 0 -20px;
-    padding: 0 20px;
+  /* Sección de menús - ANCHO COMPLETO */
+  .footer-menus-section {
+    border-top: 1px solid {{ section.settings.border_color }};
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    width: 100%;
   }
 
   .footer-menus {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
     width: 100%;
   }
 
-  /* Estilos para la columna de Atención al cliente (texto plano fijo) */
-  .service-plain {
-    padding: 0;
+  .footer-menu-col {
+    padding: 30px 20px;
+    border-right: 1px solid {{ section.settings.border_color }};
   }
 
-  .service-plain h3 {
+  .footer-menu-col:last-child {
+    border-right: none;
+  }
+
+  .footer-menu-col h3 {
     font-size: 14px;
     font-weight: 600;
     margin: 0 0 20px 0;
@@ -67,17 +77,38 @@
     color: #ffffff;
   }
 
-  .service-plain .plain-text {
+  .footer-menu-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-menu-col li {
+    margin-bottom: 12px;
+  }
+
+  .footer-menu-col a {
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    font-size: 13px;
+  }
+
+  .footer-menu-col a:hover {
+    text-decoration: underline;
+  }
+
+  /* Estilo para texto plano (Atención al cliente) */
+  .plain-text {
     font-size: 13px;
     line-height: 1.6;
     color: {{ section.settings.text_color }};
   }
 
-  .service-plain .plain-text p {
+  .plain-text p {
     margin: 0 0 10px 0;
   }
 
-  .service-plain .plain-text .hours {
+  .plain-text .hours {
     font-size: 11px;
     color: {{ section.settings.text_color | append: 'aa' }};
     margin-top: 15px;
@@ -197,42 +228,21 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* Menús normales */
-  .footer-menu-col {
-    padding: 0;
-  }
-
-  .footer-menu-col h3 {
-    font-size: 14px;
-    font-weight: 600;
-    margin: 0 0 20px 0;
-    letter-spacing: 1px;
-    color: #ffffff;
-  }
-
-  .footer-menu-col ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .footer-menu-col li {
-    margin-bottom: 12px;
-  }
-
-  .footer-menu-col a {
-    color: {{ section.settings.text_color }};
-    text-decoration: none;
-    font-size: 13px;
-  }
-
-  .footer-menu-col a:hover {
-    text-decoration: underline;
-  }
-
   /* Logo móvil (oculto en desktop) */
   .footer-logo-mobile {
     display: none;
+  }
+
+  /* Fila inferior */
+  .footer-bottom {
+    margin-top: 40px;
+    padding-top: 30px;
+    text-align: right;
+  }
+
+  .footer-bottom img {
+    max-height: 35px;
+    width: auto;
   }
 
   /* ========== ESTILOS PARA MÓVIL ========== */
@@ -267,14 +277,16 @@
       color: {{ section.settings.text_color | append: 'cc' }};
     }
 
-    /* Menús en acordeón (desplegables) */
+    /* Menús en acordeón */
     .footer-menus {
       display: block;
       width: 100%;
     }
 
     .footer-menu-col {
+      border-right: none;
       border-bottom: 1px solid {{ section.settings.border_color }};
+      padding: 0;
     }
 
     .footer-menu-col h3 {
@@ -291,7 +303,6 @@
       content: "+";
       font-size: 20px;
       font-weight: 300;
-      transition: transform 0.3s;
     }
 
     .footer-menu-col.active h3::after {
@@ -310,26 +321,29 @@
       padding-bottom: 20px;
     }
 
-    .footer-menu-col li {
-      margin-bottom: 12px;
+    /* Atención al cliente en móvil */
+    .footer-menu-col .plain-text {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding: 0;
     }
 
-    /* Atención al cliente en móvil - texto plano sin acordeón */
-    .service-plain {
-      border-bottom: 1px solid {{ section.settings.border_color }};
-    }
-
-    .service-plain h3 {
-      cursor: default;
-    }
-
-    .service-plain h3::after {
-      content: none !important;
-    }
-
-    .service-plain .plain-text {
-      display: block;
+    .footer-menu-col.active .plain-text {
+      max-height: 500px;
       padding-bottom: 20px;
+    }
+
+    .footer-menu-col h3 {
+      cursor: pointer;
+    }
+
+    .footer-menu-col h3::after {
+      content: "+";
+    }
+
+    .footer-menu-col.active h3::after {
+      content: "−";
     }
 
     /* Newsletter en móvil */
@@ -360,99 +374,121 @@
     .footer-newsletter .checkbox label {
       justify-content: flex-start;
     }
+
+    .footer-bottom {
+      text-align: center;
+    }
   }
 </style>
 
 <footer class="footer-mustang">
   <div class="page-width">
-    
-    <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) con separador vertical -->
-    <div class="footer-top">
+    <div class="footer-inner">
       
-      <!-- Logo Mustang - IZQUIERDA (solo desktop) -->
-      <div class="footer-logo">
+      <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) -->
+      <div class="footer-top">
+        
+        <!-- Logo Mustang - IZQUIERDA (solo desktop) -->
+        <div class="footer-logo">
+          {% if section.settings.logo != blank %}
+            <div class="logo-img">
+              <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
+            </div>
+          {% else %}
+            <div class="logo-img" style="background-color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+              Sube tu logo aquí
+            </div>
+          {% endif %}
+          <div class="country">{{ section.settings.country_text }}</div>
+        </div>
+        
+        <!-- Newsletter - DERECHA -->
+        <div class="footer-newsletter">
+          <h3>{{ section.settings.newsletter_title }}</h3>
+          <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
+          
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="newsletter_consent">
+              <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
+            </label>
+          </div>
+          
+          {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="email-field">
+              <label>{{ section.settings.email_label }}</label>
+              <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
+            </div>
+            <button type="submit">{{ section.settings.button_text }}</button>
+          {%- endform -%}
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE MENÚS - ANCHO COMPLETO (sin padding) -->
+  <div class="footer-menus-section">
+    <div class="page-width">
+      <div class="footer-inner">
+        <div class="footer-menus">
+          <!-- Menús dinámicos desde Shopify -->
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link_list' -%}
+              <div class="footer-menu-col" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="menu-title">{{ block.settings.heading }}</h3>
+                {%- endif -%}
+                {%- if block.settings.menu != blank -%}
+                  <ul>
+                    {%- for link in block.settings.menu.links -%}
+                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          
+          <!-- Atención al cliente - TEXTO PLANO (5ª columna) -->
+          <div class="footer-menu-col">
+            <h3 class="menu-title">{{ section.settings.service_title }}</h3>
+            <div class="plain-text">
+              {{ section.settings.service_content }}
+              {% if section.settings.show_hours %}
+                <div class="hours">{{ section.settings.hours_content }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-width">
+    <div class="footer-inner">
+      <!-- Fila inferior con reseñas -->
+      <div class="footer-bottom">
+        {% if section.settings.reviews_image != blank %}
+          <img src="{{ section.settings.reviews_image | img_url: '200x' }}" alt="Reseñas">
+        {% endif %}
+      </div>
+
+      <!-- Logo MÓVIL (aparece al final del footer) -->
+      <div class="footer-logo-mobile">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
             <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
           </div>
         {% else %}
-          <div class="logo-img" style="background-color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
-            Sube tu logo aquí
-          </div>
+          <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
         {% endif %}
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
       
-      <!-- Newsletter - DERECHA -->
-      <div class="footer-newsletter">
-        <h3>{{ section.settings.newsletter_title }}</h3>
-        <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
-        
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" id="newsletter_consent">
-            <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
-          </label>
-        </div>
-        
-        {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <div class="email-field">
-            <label>{{ section.settings.email_label }}</label>
-            <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
-          </div>
-          <button type="submit">{{ section.settings.button_text }}</button>
-        {%- endform -%}
-      </div>
-      
     </div>
-    
-    <!-- PARTE INFERIOR: 4 Menús + Atención al cliente (texto plano fijo) -->
-    <div class="footer-menus-container">
-      <div class="footer-menus">
-        <!-- Menús dinámicos desde Shopify -->
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'link_list' -%}
-            <div class="footer-menu-col" {{ block.shopify_attributes }}>
-              {%- if block.settings.heading != blank -%}
-                <h3 class="menu-title">{{ block.settings.heading }}</h3>
-              {%- endif -%}
-              {%- if block.settings.menu != blank -%}
-                <ul>
-                  {%- for link in block.settings.menu.links -%}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                  {%- endfor -%}
-                </ul>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-        
-        <!-- Atención al cliente - TEXTO PLANO FIJO (no es menú) -->
-        <div class="service-plain">
-          <h3>{{ section.settings.service_title }}</h3>
-          <div class="plain-text">
-            {{ section.settings.service_content }}
-            {% if section.settings.show_hours %}
-              <div class="hours">{{ section.settings.hours_content }}</div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Logo MÓVIL (aparece al final del footer) -->
-    <div class="footer-logo-mobile">
-      {% if section.settings.logo != blank %}
-        <div class="logo-img">
-          <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
-        </div>
-      {% else %}
-        <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
-      {% endif %}
-      <div class="country">{{ section.settings.country_text }}</div>
-    </div>
-    
   </div>
 </footer>
 
@@ -587,7 +623,7 @@
       "type": "richtext",
       "id": "service_content",
       "label": "Contenido",
-      "default": "<p>Email<br>+34 965 02 63 34</p>"
+      "default": "<p>Lunes a jueves de 9:00h a 14:00h y de 15:00h a 18:00h<br>Viernes de 9:00h a 13:00h</p><p>Email<br>+34 965 02 63 34</p>"
     },
     {
       "type": "checkbox",
@@ -598,8 +634,17 @@
     {
       "type": "richtext",
       "id": "hours_content",
-      "label": "Horario",
-      "default": "<p>Lunes a jueves de 9:00h a 14:00h y de 15:00h a 18:00h<br>Viernes de 9:00h a 13:00h</p>"
+      "label": "Horario adicional",
+      "default": "<p>Horario de atención al cliente</p>"
+    },
+    {
+      "type": "header",
+      "content": "Imagen de reseñas"
+    },
+    {
+      "type": "image_picker",
+      "id": "reviews_image",
+      "label": "Imagen de reseñas"
     }
   ],
   "blocks": [
