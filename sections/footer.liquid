@@ -20,10 +20,21 @@
     padding: 0 20px;
   }
 
-  /* ========== SEPARADOR SUPERIOR (ANCHO COMPLETO) ========== */
+  /* ========== SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL ========== */
   .footer-top-section {
-    border-bottom: 1px solid {{ section.settings.border_color }};
     width: 100%;
+    position: relative;
+  }
+
+  /* Línea HORIZONTAL - ancho completo */
+  .footer-top-section::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: {{ section.settings.border_color }};
   }
 
   .footer-top {
@@ -37,8 +48,8 @@
     width: 100%;
   }
 
-  /* Separador vertical ENTRE logo y newsletter - ANCHO COMPLETO */
-  .footer-top::after {
+  /* Línea VERTICAL - ancho completo (de arriba a abajo) */
+  .footer-top::before {
     content: "";
     position: absolute;
     left: 50%;
@@ -49,20 +60,13 @@
     transform: translateX(-50%);
   }
 
-  /* ========== SEPARADOR INFERIOR DE MENÚS (ANCHO COMPLETO) ========== */
-  .footer-menus-section {
-    border-top: 1px solid {{ section.settings.border_color }};
-    border-bottom: 1px solid {{ section.settings.border_color }};
-    width: 100%;
-    margin-top: 60px;
-  }
-
+  /* ========== MENÚS (SIN LÍNEAS) ========== */
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     width: 100%;
-    padding: 40px 0;
+    margin-top: 60px;
   }
 
   .footer-menu-col {
@@ -233,7 +237,7 @@
     display: none;
   }
 
-  /* Fila inferior */
+  /* Fila inferior con reseñas */
   .footer-bottom {
     margin-top: 40px;
     padding-top: 30px;
@@ -281,7 +285,7 @@
     .footer-menus {
       display: block;
       width: 100%;
-      padding: 20px 0;
+      margin-top: 30px;
     }
 
     .footer-menu-col {
@@ -338,15 +342,16 @@
       padding-bottom: 20px;
     }
 
+    /* Eliminar línea vertical en móvil */
+    .footer-top::before {
+      display: none;
+    }
+
     /* Newsletter en móvil */
     .footer-top {
       flex-direction: column;
       gap: 30px;
       width: 100%;
-    }
-
-    .footer-top::after {
-      display: none;
     }
 
     .footer-newsletter {
@@ -370,16 +375,12 @@
     .footer-bottom {
       text-align: center;
     }
-
-    .footer-menus-section {
-      margin-top: 30px;
-    }
   }
 </style>
 
 <footer class="footer-mustang">
   
-  <!-- PARTE SUPERIOR CON SEPARADOR A ANCHO COMPLETO -->
+  <!-- SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL -->
   <div class="footer-top-section">
     <div class="page-width">
       <div class="footer-inner">
@@ -426,38 +427,36 @@
     </div>
   </div>
 
-  <!-- SECCIÓN DE MENÚS CON SEPARADORES A ANCHO COMPLETO (sin bordes internos) -->
-  <div class="footer-menus-section">
-    <div class="page-width">
-      <div class="footer-inner">
-        <div class="footer-menus">
-          <!-- Menús dinámicos desde Shopify -->
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'link_list' -%}
-              <div class="footer-menu-col" {{ block.shopify_attributes }}>
-                {%- if block.settings.heading != blank -%}
-                  <h3 class="menu-title">{{ block.settings.heading }}</h3>
-                {%- endif -%}
-                {%- if block.settings.menu != blank -%}
-                  <ul>
-                    {%- for link in block.settings.menu.links -%}
-                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-          
-          <!-- Atención al cliente - TEXTO PLANO (5ª columna) -->
-          <div class="footer-menu-col">
-            <h3 class="menu-title">{{ section.settings.service_title }}</h3>
-            <div class="plain-text">
-              {{ section.settings.service_content }}
-              {% if section.settings.show_hours %}
-                <div class="hours">{{ section.settings.hours_content }}</div>
-              {% endif %}
+  <!-- SECCIÓN DE MENÚS (SIN LÍNEAS) -->
+  <div class="page-width">
+    <div class="footer-inner">
+      <div class="footer-menus">
+        <!-- Menús dinámicos desde Shopify -->
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'link_list' -%}
+            <div class="footer-menu-col" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="menu-title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul>
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
             </div>
+          {%- endif -%}
+        {%- endfor -%}
+        
+        <!-- Atención al cliente - TEXTO PLANO (5ª columna) -->
+        <div class="footer-menu-col">
+          <h3 class="menu-title">{{ section.settings.service_title }}</h3>
+          <div class="plain-text">
+            {{ section.settings.service_content }}
+            {% if section.settings.show_hours %}
+              <div class="hours">{{ section.settings.hours_content }}</div>
+            {% endif %}
           </div>
         </div>
       </div>
