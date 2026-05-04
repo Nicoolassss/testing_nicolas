@@ -73,7 +73,7 @@
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 10px 0;
-    color: #ffffff; /* TÍTULO NEWSLETTER SIEMPRE BLANCO */
+    color: #ffffff;
   }
 
   .footer-newsletter .newsletter-text {
@@ -138,17 +138,15 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* ========== PARTE INFERIOR: 5 Menús ========== */
+  /* ========== PARTE INFERIOR: 5 Menús SIN separadores ========== */
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    border-left: 1px solid {{ section.settings.border_color }};
+    gap: 30px;
   }
 
   .footer-menu-col {
-    padding: 0 25px;
-    border-right: 1px solid {{ section.settings.border_color }};
+    padding: 0;
   }
 
   .footer-menu-col h3 {
@@ -156,7 +154,7 @@
     font-weight: 600;
     margin: 0 0 20px 0;
     letter-spacing: 1px;
-    color: #ffffff; /* TÍTULOS DE MENÚS SIEMPRE BLANCOS */
+    color: #ffffff;
   }
 
   .footer-menu-col ul {
@@ -183,9 +181,7 @@
   @media (max-width: 1000px) {
     .footer-menus {
       grid-template-columns: repeat(3, 1fr);
-    }
-    .footer-menu-col {
-      padding: 20px;
+      gap: 30px;
     }
     .footer-top {
       flex-direction: column;
@@ -228,7 +224,7 @@
     <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) con separador vertical -->
     <div class="footer-top">
       
-      <!-- Logo Mustang - IZQUIERDA (espacio para tu foto) -->
+      <!-- Logo Mustang - IZQUIERDA -->
       <div class="footer-logo">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
@@ -242,28 +238,30 @@
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
       
-      <!-- Newsletter - DERECHA -->
+      <!-- Newsletter - DERECHA (con el orden correcto) -->
       <div class="footer-newsletter">
         <h3>{{ section.settings.newsletter_title }}</h3>
         <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
         
+        <!-- CASILLA DE VERIFICACIÓN PRIMERO -->
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="newsletter_consent">
+            <span>{{ section.settings.checkbox_text }}</span>
+          </label>
+        </div>
+        
+        <!-- LUEGO EL CAMPO DE CORREO Y BOTÓN -->
         {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
           <button type="submit">{{ section.settings.button_text }}</button>
         {%- endform -%}
-        
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" checked disabled>
-            <span>{{ section.settings.checkbox_text }}</span>
-          </label>
-        </div>
       </div>
       
     </div>
     
-    <!-- PARTE INFERIOR: 5 Menús -->
+    <!-- PARTE INFERIOR: 5 Menús SIN líneas divisorias -->
     <div class="footer-menus">
       {%- for block in section.blocks -%}
         <div class="footer-menu-col" {{ block.shopify_attributes }}>
@@ -365,6 +363,12 @@
     },
     {
       "type": "text",
+      "id": "checkbox_text",
+      "label": "Texto del checkbox",
+      "default": "Deseo suscribirme a la newsletter de Mtng. He leído y acepto la política de privacidad."
+    },
+    {
+      "type": "text",
       "id": "placeholder_text",
       "label": "Texto del input",
       "default": "Correo electrónico"
@@ -374,12 +378,6 @@
       "id": "button_text",
       "label": "Texto del botón",
       "default": "ENVIAR"
-    },
-    {
-      "type": "text",
-      "id": "checkbox_text",
-      "label": "Texto del checkbox",
-      "default": "Deseo suscribirme a la newsletter de Mtng. He leído y acepto la política de privacidad."
     }
   ],
   "blocks": [
