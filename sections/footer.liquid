@@ -63,10 +63,10 @@
     margin-top: 10px;
   }
 
-  /* Newsletter - Derecha */
+  /* Newsletter - Derecha - ESTILO EXACTO COMO LA IMAGEN */
   .footer-newsletter {
     flex: 1;
-    text-align: right;
+    text-align: left;
   }
 
   .footer-newsletter h3 {
@@ -82,15 +82,15 @@
     color: {{ section.settings.text_color | append: 'cc' }};
   }
 
+  /* Checkbox con estilo de lista (con guión) */
   .footer-newsletter .checkbox {
-    margin: 15px 0;
+    margin: 20px 0;
     font-size: 12px;
   }
 
   .footer-newsletter .checkbox label {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    align-items: flex-start;
     gap: 8px;
     cursor: pointer;
   }
@@ -98,27 +98,44 @@
   .footer-newsletter .checkbox input {
     width: 16px;
     height: 16px;
+    margin-top: 2px;
     cursor: pointer;
   }
 
+  .footer-newsletter .checkbox .checkbox-text {
+    flex: 1;
+  }
+
+  /* Estilo del campo de correo */
   .newsletter-form {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    align-items: center;
   }
 
-  .newsletter-form input {
+  .newsletter-form .email-field {
     flex: 1;
+    min-width: 250px;
+  }
+
+  .newsletter-form .email-field label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: {{ section.settings.text_color | append: 'aa' }};
+  }
+
+  .newsletter-form .email-field input {
+    width: 100%;
     padding: 12px 15px;
     border: 1px solid {{ section.settings.border_color }};
     background-color: transparent;
     color: {{ section.settings.text_color }};
     font-size: 14px;
-    min-width: 200px;
   }
 
-  .newsletter-form input::placeholder {
+  .newsletter-form .email-field input::placeholder {
     color: {{ section.settings.text_color | append: '88' }};
   }
 
@@ -131,6 +148,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    margin-top: 20px;
   }
 
   .newsletter-form button:hover {
@@ -194,13 +212,14 @@
       text-align: left;
       width: 100%;
     }
-    .footer-newsletter .checkbox label {
-      justify-content: flex-start;
+    .footer-logo {
+      width: 100%;
     }
     .newsletter-form {
-      justify-content: flex-start;
+      flex-direction: column;
+      align-items: stretch;
     }
-    .footer-logo {
+    .newsletter-form button {
       width: 100%;
     }
   }
@@ -238,23 +257,26 @@
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
       
-      <!-- Newsletter - DERECHA (con el orden correcto) -->
+      <!-- Newsletter - DERECHA (exactamente como la imagen) -->
       <div class="footer-newsletter">
         <h3>{{ section.settings.newsletter_title }}</h3>
         <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
         
-        <!-- CASILLA DE VERIFICACIÓN PRIMERO -->
+        <!-- Checkbox con guión -->
         <div class="checkbox">
           <label>
             <input type="checkbox" id="newsletter_consent">
-            <span>{{ section.settings.checkbox_text }}</span>
+            <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
           </label>
         </div>
         
-        <!-- LUEGO EL CAMPO DE CORREO Y BOTÓN -->
+        <!-- Campo de correo electrónico y botón ENVIAR -->
         {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
-          <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
+          <div class="email-field">
+            <label>{{ section.settings.email_label }}</label>
+            <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
+          </div>
           <button type="submit">{{ section.settings.button_text }}</button>
         {%- endform -%}
       </div>
@@ -326,8 +348,7 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo de Mustang",
-      "info": "Sube la imagen del logo de Mustang"
+      "label": "Logo de Mustang"
     },
     {
       "type": "range",
@@ -369,9 +390,15 @@
     },
     {
       "type": "text",
-      "id": "placeholder_text",
-      "label": "Texto del input",
+      "id": "email_label",
+      "label": "Etiqueta del campo email",
       "default": "Correo electrónico"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_text",
+      "label": "Placeholder del email",
+      "default": "tu@email.com"
     },
     {
       "type": "text",
