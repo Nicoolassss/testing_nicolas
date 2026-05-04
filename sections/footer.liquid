@@ -237,16 +237,38 @@
     display: none;
   }
 
-  /* Fila inferior con reseñas */
+  /* ========== PARTE INFERIOR (RESEÑAS Y COPYRIGHT) ========== */
   .footer-bottom {
-    margin-top: 40px;
+    margin-top: 60px;
     padding-top: 30px;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
-  .footer-bottom img {
-    max-height: 35px;
+  .footer-trustpilot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-trustpilot .trust-text {
+    font-size: 12px;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .footer-trustpilot img {
+    max-height: 40px;
     width: auto;
+  }
+
+  .footer-copyright {
+    font-size: 10px;
+    color: {{ section.settings.text_color | append: 'aa' }};
+    text-align: left;
   }
 
   /* ========== ESTILOS PARA MÓVIL ========== */
@@ -372,7 +394,22 @@
       justify-content: flex-start;
     }
 
+    /* Footer bottom en móvil */
     .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+    }
+
+    .footer-trustpilot {
+      justify-content: center;
+    }
+
+    .footer-trustpilot .trust-text {
+      text-align: center;
+    }
+
+    .footer-copyright {
       text-align: center;
     }
   }
@@ -463,14 +500,26 @@
     </div>
   </div>
 
-  <!-- PARTE INFERIOR -->
+  <!-- PARTE INFERIOR - TRUSTPILOT Y COPYRIGHT -->
   <div class="page-width">
     <div class="footer-inner">
-      <!-- Fila inferior con reseñas -->
       <div class="footer-bottom">
-        {% if section.settings.reviews_image != blank %}
-          <img src="{{ section.settings.reviews_image | img_url: '200x' }}" alt="Reseñas">
-        {% endif %}
+        
+        <!-- Trustpilot - Imagen + Texto -->
+        <div class="footer-trustpilot">
+          {% if section.settings.trustpilot_image != blank %}
+            <img src="{{ section.settings.trustpilot_image | img_url: '100x' }}" alt="Trustpilot">
+          {% endif %}
+          <div class="trust-text">
+            {{ section.settings.trustpilot_text }}
+          </div>
+        </div>
+        
+        <!-- Copyright -->
+        <div class="footer-copyright">
+          {{ section.settings.copyright_text }}
+        </div>
+        
       </div>
 
       <!-- Logo MÓVIL -->
@@ -631,16 +680,29 @@
       "type": "richtext",
       "id": "hours_content",
       "label": "Horario adicional",
-      "default": "<p>Horario de atención al cliente</p>"
+      "default": ""
     },
     {
       "type": "header",
-      "content": "Imagen de reseñas"
+      "content": "Trustpilot y Copyright"
     },
     {
       "type": "image_picker",
-      "id": "reviews_image",
-      "label": "Imagen de reseñas"
+      "id": "trustpilot_image",
+      "label": "Imagen de Trustpilot",
+      "info": "Sube el logo de Trustpilot o estrellas"
+    },
+    {
+      "type": "richtext",
+      "id": "trustpilot_text",
+      "label": "Texto de Trustpilot",
+      "default": "<p>Reseñanos en<br>Trustpilot</p>"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Texto de copyright",
+      "default": "mtng© 2009–2026. Todos los derechos reservados MTNG EUROPE EXPERIENCE, SLU."
     }
   ],
   "blocks": [
