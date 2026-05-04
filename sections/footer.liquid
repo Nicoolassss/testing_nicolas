@@ -247,7 +247,7 @@
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
-  /* ========== TRUSTPILOT - CENTRADO (FORZADO) ========== */
+  /* ========== TRUSTPILOT - CENTRADO ========== */
   .footer-trustpilot-container {
     width: 100%;
     display: flex !important;
@@ -275,7 +275,6 @@
     margin: 0;
   }
 
-  /* Imagen más grande - tamaño fijo grande */
   .footer-trustpilot img {
     width: 180px;
     max-width: 180px;
@@ -285,12 +284,10 @@
 
   /* ========== ESTILOS PARA MÓVIL ========== */
   @media (max-width: 768px) {
-    /* Ocultar el logo de desktop */
     .footer-logo {
       display: none;
     }
 
-    /* Mostrar logo al final del footer */
     .footer-logo-mobile {
       display: block;
       margin-top: 40px;
@@ -315,7 +312,6 @@
       color: {{ section.settings.text_color | append: 'cc' }};
     }
 
-    /* Menús en acordeón */
     .footer-menus {
       display: block;
       width: 100%;
@@ -363,7 +359,6 @@
       padding-bottom: 20px;
     }
 
-    /* Atención al cliente en móvil */
     .footer-menu-col .plain-text {
       max-height: 0;
       overflow: hidden;
@@ -376,12 +371,10 @@
       padding-bottom: 20px;
     }
 
-    /* Eliminar línea vertical en móvil */
     .footer-top::before {
       display: none;
     }
 
-    /* Newsletter en móvil */
     .footer-top {
       flex-direction: column;
       gap: 30px;
@@ -406,7 +399,6 @@
       justify-content: flex-start;
     }
 
-    /* Trustpilot en móvil - centrado */
     .footer-trustpilot {
       flex-direction: column;
       gap: 15px;
@@ -442,7 +434,39 @@
                 Sube tu logo aquí
               </div>
             {% endif %}
-            <div class="country">{{ section.settings.country_text }}</div>
+            
+            <!-- TEXTO DE PAÍS DINÁMICO -->
+            <div class="country">
+              Estás comprando en: 
+              {%- case localization.country.iso_code -%}
+                {%- when 'ES' -%}
+                  España
+                {%- when 'GB' -%}
+                  Inglaterra
+                {%- when 'US' -%}
+                  Estados Unidos
+                {%- when 'FR' -%}
+                  Francia
+                {%- when 'DE' -%}
+                  Alemania
+                {%- when 'IT' -%}
+                  Italia
+                {%- when 'PT' -%}
+                  Portugal
+                {%- when 'MX' -%}
+                  México
+                {%- when 'AR' -%}
+                  Argentina
+                {%- when 'CO' -%}
+                  Colombia
+                {%- when 'CL' -%}
+                  Chile
+                {%- when 'PE' -%}
+                  Perú
+                {%- else -%}
+                  {{ localization.country.name }}
+              {%- endcase -%}
+            </div>
           </div>
           
           <!-- Newsletter - DERECHA -->
@@ -476,7 +500,6 @@
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-menus">
-        <!-- Menús dinámicos desde Shopify -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'link_list' -%}
             <div class="footer-menu-col" {{ block.shopify_attributes }}>
@@ -494,7 +517,6 @@
           {%- endif -%}
         {%- endfor -%}
         
-        <!-- Atención al cliente - TEXTO PLANO (5ª columna) -->
         <div class="footer-menu-col">
           <h3 class="menu-title">{{ section.settings.service_title }}</h3>
           <div class="plain-text">
@@ -508,7 +530,7 @@
     </div>
   </div>
 
-  <!-- COPYRIGHT (centrado) -->
+  <!-- COPYRIGHT -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-copyright">
@@ -517,7 +539,7 @@
     </div>
   </div>
 
-  <!-- TRUSTPILOT - CENTRADO CON CONTAINER FORZADO -->
+  <!-- TRUSTPILOT -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-trustpilot-container">
@@ -544,7 +566,37 @@
         {% else %}
           <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
         {% endif %}
-        <div class="country">{{ section.settings.country_text }}</div>
+        <div class="country">
+          Estás comprando en: 
+          {%- case localization.country.iso_code -%}
+            {%- when 'ES' -%}
+              España
+            {%- when 'GB' -%}
+              Inglaterra
+            {%- when 'US' -%}
+              Estados Unidos
+            {%- when 'FR' -%}
+              Francia
+            {%- when 'DE' -%}
+              Alemania
+            {%- when 'IT' -%}
+              Italia
+            {%- when 'PT' -%}
+              Portugal
+            {%- when 'MX' -%}
+              México
+            {%- when 'AR' -%}
+              Argentina
+            {%- when 'CO' -%}
+              Colombia
+            {%- when 'CL' -%}
+              Chile
+            {%- when 'PE' -%}
+              Perú
+            {%- else -%}
+              {{ localization.country.name }}
+          {%- endcase -%}
+        </div>
       </div>
     </div>
   </div>
@@ -619,12 +671,6 @@
       "unit": "px",
       "label": "Ancho del logo",
       "default": 150
-    },
-    {
-      "type": "text",
-      "id": "country_text",
-      "label": "Texto de ubicación",
-      "default": "Estás comprando en: España"
     },
     {
       "type": "header",
@@ -711,8 +757,7 @@
     {
       "type": "image_picker",
       "id": "trustpilot_image",
-      "label": "Imagen de Trustpilot",
-      "info": "Sube el logo de Trustpilot o estrellas"
+      "label": "Imagen de Trustpilot"
     },
     {
       "type": "richtext",
