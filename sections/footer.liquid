@@ -20,21 +20,24 @@
     padding: 0 20px;
   }
 
-  /* ========== SEPARADORES A ANCHO COMPLETO ========== */
+  /* ========== SEPARADOR SUPERIOR (ANCHO COMPLETO) ========== */
+  .footer-top-section {
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    width: 100%;
+  }
+
   .footer-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 40px;
-    margin-bottom: 60px;
     padding-bottom: 40px;
-    border-bottom: 1px solid {{ section.settings.border_color }};
     position: relative;
     width: 100%;
   }
 
-  /* Separador vertical - ANCHO COMPLETO */
+  /* Separador vertical ENTRE logo y newsletter - ANCHO COMPLETO */
   .footer-top::after {
     content: "";
     position: absolute;
@@ -46,27 +49,24 @@
     transform: translateX(-50%);
   }
 
-  /* Sección de menús - ANCHO COMPLETO */
+  /* ========== SEPARADOR INFERIOR DE MENÚS (ANCHO COMPLETO) ========== */
   .footer-menus-section {
     border-top: 1px solid {{ section.settings.border_color }};
     border-bottom: 1px solid {{ section.settings.border_color }};
     width: 100%;
+    margin-top: 60px;
   }
 
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 0;
+    gap: 30px;
     width: 100%;
+    padding: 40px 0;
   }
 
   .footer-menu-col {
-    padding: 30px 20px;
-    border-right: 1px solid {{ section.settings.border_color }};
-  }
-
-  .footer-menu-col:last-child {
-    border-right: none;
+    padding: 0;
   }
 
   .footer-menu-col h3 {
@@ -114,7 +114,7 @@
     margin-top: 15px;
   }
 
-  /* ========== PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) ========== */
+  /* ========== PARTE SUPERIOR ========== */
   .footer-logo {
     flex: 1;
     text-align: left;
@@ -281,12 +281,16 @@
     .footer-menus {
       display: block;
       width: 100%;
+      padding: 20px 0;
     }
 
     .footer-menu-col {
-      border-right: none;
       border-bottom: 1px solid {{ section.settings.border_color }};
       padding: 0;
+    }
+
+    .footer-menu-col:last-child {
+      border-bottom: none;
     }
 
     .footer-menu-col h3 {
@@ -334,18 +338,6 @@
       padding-bottom: 20px;
     }
 
-    .footer-menu-col h3 {
-      cursor: pointer;
-    }
-
-    .footer-menu-col h3::after {
-      content: "+";
-    }
-
-    .footer-menu-col.active h3::after {
-      content: "−";
-    }
-
     /* Newsletter en móvil */
     .footer-top {
       flex-direction: column;
@@ -378,58 +370,63 @@
     .footer-bottom {
       text-align: center;
     }
+
+    .footer-menus-section {
+      margin-top: 30px;
+    }
   }
 </style>
 
 <footer class="footer-mustang">
-  <div class="page-width">
-    <div class="footer-inner">
-      
-      <!-- PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) -->
-      <div class="footer-top">
-        
-        <!-- Logo Mustang - IZQUIERDA (solo desktop) -->
-        <div class="footer-logo">
-          {% if section.settings.logo != blank %}
-            <div class="logo-img">
-              <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
-            </div>
-          {% else %}
-            <div class="logo-img" style="background-color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
-              Sube tu logo aquí
-            </div>
-          {% endif %}
-          <div class="country">{{ section.settings.country_text }}</div>
-        </div>
-        
-        <!-- Newsletter - DERECHA -->
-        <div class="footer-newsletter">
-          <h3>{{ section.settings.newsletter_title }}</h3>
-          <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
+  
+  <!-- PARTE SUPERIOR CON SEPARADOR A ANCHO COMPLETO -->
+  <div class="footer-top-section">
+    <div class="page-width">
+      <div class="footer-inner">
+        <div class="footer-top">
           
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" id="newsletter_consent">
-              <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
-            </label>
+          <!-- Logo Mustang - IZQUIERDA -->
+          <div class="footer-logo">
+            {% if section.settings.logo != blank %}
+              <div class="logo-img">
+                <img src="{{ section.settings.logo | img_url: 'master' }}" alt="MUSTANG">
+              </div>
+            {% else %}
+              <div class="logo-img" style="background-color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+                Sube tu logo aquí
+              </div>
+            {% endif %}
+            <div class="country">{{ section.settings.country_text }}</div>
           </div>
           
-          {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="email-field">
-              <label>{{ section.settings.email_label }}</label>
-              <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
+          <!-- Newsletter - DERECHA -->
+          <div class="footer-newsletter">
+            <h3>{{ section.settings.newsletter_title }}</h3>
+            <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
+            
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="newsletter_consent">
+                <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
+              </label>
             </div>
-            <button type="submit">{{ section.settings.button_text }}</button>
-          {%- endform -%}
+            
+            {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="email-field">
+                <label>{{ section.settings.email_label }}</label>
+                <input type="email" name="contact[email]" placeholder="{{ section.settings.placeholder_text }}" required>
+              </div>
+              <button type="submit">{{ section.settings.button_text }}</button>
+            {%- endform -%}
+          </div>
+          
         </div>
-        
       </div>
-      
     </div>
   </div>
 
-  <!-- SECCIÓN DE MENÚS - ANCHO COMPLETO (sin padding) -->
+  <!-- SECCIÓN DE MENÚS CON SEPARADORES A ANCHO COMPLETO (sin bordes internos) -->
   <div class="footer-menus-section">
     <div class="page-width">
       <div class="footer-inner">
@@ -467,6 +464,7 @@
     </div>
   </div>
 
+  <!-- PARTE INFERIOR -->
   <div class="page-width">
     <div class="footer-inner">
       <!-- Fila inferior con reseñas -->
@@ -476,7 +474,7 @@
         {% endif %}
       </div>
 
-      <!-- Logo MÓVIL (aparece al final del footer) -->
+      <!-- Logo MÓVIL -->
       <div class="footer-logo-mobile">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
@@ -493,7 +491,6 @@
 </footer>
 
 <script>
-  // Script para acordeón en móvil
   document.addEventListener('DOMContentLoaded', function() {
     var menuCols = document.querySelectorAll('.footer-menu-col');
     
