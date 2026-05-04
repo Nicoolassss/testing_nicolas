@@ -15,7 +15,7 @@
     padding: 0 20px;
   }
 
-  /* ========== PARTE SUPERIOR: Logo (izquierda) + Newsletter (derecha) ========== */
+  /* ========== SEPARADORES A ANCHO COMPLETO ========== */
   .footer-top {
     display: flex;
     justify-content: space-between;
@@ -26,9 +26,10 @@
     padding-bottom: 40px;
     border-bottom: 1px solid {{ section.settings.border_color }};
     position: relative;
+    width: 100%;
   }
 
-  /* Separador vertical entre logo y newsletter */
+  /* Separador vertical - ANCHO COMPLETO */
   .footer-top::after {
     content: "";
     position: absolute;
@@ -159,6 +160,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
+    width: 100%;
   }
 
   .footer-menu-col {
@@ -193,6 +195,23 @@
     text-decoration: underline;
   }
 
+  /* Estilo para texto plano (Atención al cliente) */
+  .footer-menu-col .plain-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+  }
+
+  .footer-menu-col .plain-text p {
+    margin: 0 0 10px 0;
+  }
+
+  .footer-menu-col .plain-text .hours {
+    font-size: 11px;
+    color: {{ section.settings.text_color | append: 'aa' }};
+    margin-top: 15px;
+  }
+
   /* Logo móvil (oculto en desktop) */
   .footer-logo-mobile {
     display: none;
@@ -212,6 +231,7 @@
       padding-top: 30px;
       border-top: 1px solid {{ section.settings.border_color }};
       text-align: center;
+      width: 100%;
     }
 
     .footer-logo-mobile .logo-img {
@@ -229,9 +249,10 @@
       color: {{ section.settings.text_color | append: 'cc' }};
     }
 
-    /* Menús en acordeón (desplegables) */
+    /* Menús en acordeón (desplegables) - Excepto Atención al cliente */
     .footer-menus {
       display: block;
+      width: 100%;
     }
 
     .footer-menu-col {
@@ -249,26 +270,41 @@
       position: relative;
     }
 
-    .footer-menu-col h3::after {
+    /* El título de Atención al cliente NO tiene flecha (no es desplegable) */
+    .footer-menu-col.service-plain h3 {
+      cursor: default;
+    }
+
+    .footer-menu-col.service-plain h3::after {
+      content: none !important;
+    }
+
+    .footer-menu-col:not(.service-plain) h3::after {
       content: "+";
       font-size: 20px;
       font-weight: 300;
       transition: transform 0.3s;
     }
 
-    .footer-menu-col.active h3::after {
+    .footer-menu-col:not(.service-plain).active h3::after {
       content: "−";
     }
 
-    .footer-menu-col ul {
+    .footer-menu-col:not(.service-plain) ul {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease-out;
       padding: 0;
     }
 
-    .footer-menu-col.active ul {
+    .footer-menu-col:not(.service-plain).active ul {
       max-height: 500px;
+      padding-bottom: 20px;
+    }
+
+    /* El texto plano siempre visible */
+    .footer-menu-col.service-plain .plain-text {
+      display: block;
       padding-bottom: 20px;
     }
 
@@ -280,6 +316,7 @@
     .footer-top {
       flex-direction: column;
       gap: 30px;
+      width: 100%;
     }
 
     .footer-top::after {
@@ -353,19 +390,32 @@
     <!-- PARTE INFERIOR: Menús -->
     <div class="footer-menus" id="footer-menus-mobile">
       {%- for block in section.blocks -%}
-        <div class="footer-menu-col" {{ block.shopify_attributes }}>
-          {%- if block.settings.heading != blank -%}
-            <h3 class="menu-title">{{ block.settings.heading }}</h3>
-          {%- endif -%}
-          
-          {%- if block.type == 'link_list' and block.settings.menu != blank -%}
-            <ul>
-              {%- for link in block.settings.menu.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
-            </ul>
-          {%- endif -%}
-        </div>
+        {%- if block.type == 'link_list' -%}
+          <div class="footer-menu-col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h3 class="menu-title">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul>
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- elsif block.type == 'customer_service' -%}
+          <div class="footer-menu-col service-plain" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h3>{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            <div class="plain-text">
+              {{ block.settings.service_content }}
+              {% if block.settings.show_hours %}
+                <div class="hours">{{ block.settings.hours_content }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
 
@@ -385,9 +435,9 @@
 </footer>
 
 <script>
-  // Script para acordeón en móvil
+  // Script para acordeón en móvil (solo para menús normales, no para Atención al cliente)
   document.addEventListener('DOMContentLoaded', function() {
-    var menuCols = document.querySelectorAll('.footer-menu-col');
+    var menuCols = document.querySelectorAll('.footer-menu-col:not(.service-plain)');
     
     menuCols.forEach(function(col) {
       var title = col.querySelector('.menu-title');
@@ -417,7 +467,7 @@
     {
       "type": "color",
       "id": "text_color",
-      "label": "Color del texto (enlaces y textos)",
+      "label": "Color del texto",
       "default": "#ffffff"
     },
     {
@@ -506,7 +556,7 @@
     {
       "type": "link_list",
       "name": "Menú",
-      "limit": 5,
+      "limit": 4,
       "settings": [
         {
           "type": "text",
@@ -517,8 +567,38 @@
         {
           "type": "link_list",
           "id": "menu",
-          "label": "Seleccionar menú",
-          "info": "Crea tus menús en Online Store > Navegación"
+          "label": "Seleccionar menú"
+        }
+      ]
+    },
+    {
+      "type": "customer_service",
+      "name": "Atención al cliente (texto plano)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Atención al cliente"
+        },
+        {
+          "type": "richtext",
+          "id": "service_content",
+          "label": "Contenido",
+          "default": "<p>Email<br>+34 965 02 63 34</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hours",
+          "label": "Mostrar horario",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "hours_content",
+          "label": "Horario",
+          "default": "<p>Lunes a jueves de 9:00h a 14:00h y de 15:00h a 18:00h<br>Viernes de 9:00h a 13:00h</p>"
         }
       ]
     }
@@ -531,7 +611,7 @@
         { "type": "link_list" },
         { "type": "link_list" },
         { "type": "link_list" },
-        { "type": "link_list" }
+        { "type": "customer_service" }
       ]
     }
   ]
