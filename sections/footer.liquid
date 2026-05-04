@@ -48,12 +48,12 @@
     width: 100%;
   }
 
-  /* Línea VERTICAL - ancho completo (de arriba a abajo) */
+  /* Línea VERTICAL - que llegue ARRIBA DEL TODO */
   .footer-top::before {
     content: "";
     position: absolute;
     left: 50%;
-    top: 0;
+    top: -60px;
     bottom: 0;
     width: 1px;
     background-color: {{ section.settings.border_color }};
