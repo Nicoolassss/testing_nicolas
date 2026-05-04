@@ -237,38 +237,49 @@
     display: none;
   }
 
-  /* ========== PARTE INFERIOR (RESEÑAS Y COPYRIGHT) ========== */
+  /* ========== PARTE INFERIOR (TRUSTPILOT CENTRADO) ========== */
   .footer-bottom {
     margin-top: 60px;
     padding-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
+    border-top: 1px solid {{ section.settings.border_color }};
   }
 
   .footer-trustpilot {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
   }
 
   .footer-trustpilot .trust-text {
     font-size: 12px;
-    text-align: right;
     line-height: 1.4;
+    text-align: left;
+  }
+
+  .footer-trustpilot .trust-text p {
+    margin: 0;
   }
 
   .footer-trustpilot img {
-    max-height: 40px;
-    width: auto;
+    max-width: {{ section.settings.trustpilot_image_width }}px;
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
+  /* Copyright debajo del todo */
   .footer-copyright {
+    margin-top: 20px;
+    text-align: center;
     font-size: 10px;
     color: {{ section.settings.text_color | append: 'aa' }};
-    text-align: left;
   }
 
   /* ========== ESTILOS PARA MÓVIL ========== */
@@ -394,22 +405,13 @@
       justify-content: flex-start;
     }
 
-    /* Footer bottom en móvil */
-    .footer-bottom {
+    /* Trustpilot en móvil */
+    .footer-trustpilot {
       flex-direction: column;
       text-align: center;
-      gap: 15px;
-    }
-
-    .footer-trustpilot {
-      justify-content: center;
     }
 
     .footer-trustpilot .trust-text {
-      text-align: center;
-    }
-
-    .footer-copyright {
       text-align: center;
     }
   }
@@ -500,26 +502,25 @@
     </div>
   </div>
 
-  <!-- PARTE INFERIOR - TRUSTPILOT Y COPYRIGHT -->
+  <!-- PARTE INFERIOR - TRUSTPILOT CENTRADO Y COPYRIGHT -->
   <div class="page-width">
     <div class="footer-inner">
+      
+      <!-- Trustpilot centrado -->
       <div class="footer-bottom">
-        
-        <!-- Trustpilot - Imagen + Texto -->
         <div class="footer-trustpilot">
           {% if section.settings.trustpilot_image != blank %}
-            <img src="{{ section.settings.trustpilot_image | img_url: '100x' }}" alt="Trustpilot">
+            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
           {% endif %}
           <div class="trust-text">
             {{ section.settings.trustpilot_text }}
           </div>
         </div>
-        
-        <!-- Copyright -->
-        <div class="footer-copyright">
-          {{ section.settings.copyright_text }}
-        </div>
-        
+      </div>
+      
+      <!-- Copyright centrado debajo -->
+      <div class="footer-copyright">
+        {{ section.settings.copyright_text }}
       </div>
 
       <!-- Logo MÓVIL -->
@@ -691,6 +692,16 @@
       "id": "trustpilot_image",
       "label": "Imagen de Trustpilot",
       "info": "Sube el logo de Trustpilot o estrellas"
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_image_width",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Ancho de la imagen Trustpilot",
+      "default": 100
     },
     {
       "type": "richtext",
