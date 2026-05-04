@@ -237,28 +237,28 @@
     display: none;
   }
 
-  /* ========== PARTE INFERIOR (TRUSTPILOT CENTRADO) ========== */
-  .footer-bottom {
+  /* ========== COPYRIGHT (arriba) ========== */
+  .footer-copyright {
     margin-top: 60px;
     padding-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    text-align: center;
+    font-size: 10px;
+    color: {{ section.settings.text_color | append: 'aa' }};
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
+  /* ========== TRUSTPILOT (debajo de todo, centrado y más grande) ========== */
   .footer-trustpilot {
+    margin-top: 30px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 15px;
+    align-items: center;
+    gap: 20px;
     text-align: center;
   }
 
   .footer-trustpilot .trust-text {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.4;
     text-align: left;
   }
@@ -272,14 +272,6 @@
     width: 100%;
     height: auto;
     display: block;
-  }
-
-  /* Copyright debajo del todo */
-  .footer-copyright {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 10px;
-    color: {{ section.settings.text_color | append: 'aa' }};
   }
 
   /* ========== ESTILOS PARA MÓVIL ========== */
@@ -408,7 +400,7 @@
     /* Trustpilot en móvil */
     .footer-trustpilot {
       flex-direction: column;
-      text-align: center;
+      gap: 10px;
     }
 
     .footer-trustpilot .trust-text {
@@ -502,28 +494,32 @@
     </div>
   </div>
 
-  <!-- PARTE INFERIOR - TRUSTPILOT CENTRADO Y COPYRIGHT -->
+  <!-- COPYRIGHT -->
   <div class="page-width">
     <div class="footer-inner">
-      
-      <!-- Trustpilot centrado -->
-      <div class="footer-bottom">
-        <div class="footer-trustpilot">
-          {% if section.settings.trustpilot_image != blank %}
-            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-          {% endif %}
-          <div class="trust-text">
-            {{ section.settings.trustpilot_text }}
-          </div>
-        </div>
-      </div>
-      
-      <!-- Copyright centrado debajo -->
       <div class="footer-copyright">
         {{ section.settings.copyright_text }}
       </div>
+    </div>
+  </div>
 
-      <!-- Logo MÓVIL -->
+  <!-- TRUSTPILOT - DEBAJO DE TODO, CENTRADO Y MÁS GRANDE -->
+  <div class="page-width">
+    <div class="footer-inner">
+      <div class="footer-trustpilot">
+        {% if section.settings.trustpilot_image != blank %}
+          <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+        {% endif %}
+        <div class="trust-text">
+          {{ section.settings.trustpilot_text }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo MÓVIL -->
+  <div class="page-width">
+    <div class="footer-inner">
       <div class="footer-logo-mobile">
         {% if section.settings.logo != blank %}
           <div class="logo-img">
@@ -534,7 +530,6 @@
         {% endif %}
         <div class="country">{{ section.settings.country_text }}</div>
       </div>
-      
     </div>
   </div>
 </footer>
@@ -685,7 +680,17 @@
     },
     {
       "type": "header",
-      "content": "Trustpilot y Copyright"
+      "content": "Copyright"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Texto de copyright",
+      "default": "mtng© 2009–2026. Todos los derechos reservados MTNG EUROPE EXPERIENCE, SLU."
+    },
+    {
+      "type": "header",
+      "content": "Trustpilot"
     },
     {
       "type": "image_picker",
@@ -696,24 +701,18 @@
     {
       "type": "range",
       "id": "trustpilot_image_width",
-      "min": 50,
-      "max": 200,
-      "step": 5,
+      "min": 80,
+      "max": 300,
+      "step": 10,
       "unit": "px",
       "label": "Ancho de la imagen Trustpilot",
-      "default": 100
+      "default": 150
     },
     {
       "type": "richtext",
       "id": "trustpilot_text",
       "label": "Texto de Trustpilot",
       "default": "<p>Reseñanos en<br>Trustpilot</p>"
-    },
-    {
-      "type": "text",
-      "id": "copyright_text",
-      "label": "Texto de copyright",
-      "default": "mtng© 2009–2026. Todos los derechos reservados MTNG EUROPE EXPERIENCE, SLU."
     }
   ],
   "blocks": [
