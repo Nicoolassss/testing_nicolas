@@ -19,7 +19,6 @@
     padding: 0 20px;
   }
 
-  /* ========== SECCIÓN SUPERIOR ========== */
   .footer-top-section {
     width: 100%;
     position: relative;
@@ -57,7 +56,6 @@
     transform: translateX(-50%);
   }
 
-  /* ========== MENÚS ========== */
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -114,7 +112,6 @@
     margin-top: 15px;
   }
 
-  /* ========== LOGO ========== */
   .footer-logo {
     flex: 1;
     text-align: left;
@@ -137,7 +134,6 @@
     margin-top: 10px;
   }
 
-  /* ========== NEWSLETTER ========== */
   .footer-newsletter {
     flex: 1;
     text-align: left;
@@ -228,7 +224,10 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* ========== COPYRIGHT ========== */
+  .footer-logo-mobile {
+    display: none;
+  }
+
   .footer-copyright {
     margin-top: 60px;
     padding-top: 30px;
@@ -236,44 +235,37 @@
     font-size: 10px;
     color: {{ section.settings.text_color | append: 'aa' }};
     border-top: 1px solid {{ section.settings.border_color }};
+    margin-bottom: 30px;
   }
 
-  /* ========== TRUSTPILOT - CENTRADO ========== */
-  .footer-trustpilot {
-    margin-top: 40px;
-    margin-bottom: 20px;
+  #tp-bloque {
+    background-color: {{ section.settings.bg_color }};
+    padding: 20px 0 30px 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -200px;
+    width: 100%;
     text-align: center;
+    z-index: 0;
+    transition: none;
   }
 
-  .footer-trustpilot .trust-content {
+  #tp-bloque img {
     display: inline-block;
-    text-align: center;
-  }
-
-  .footer-trustpilot img {
-    display: block;
-    margin: 0 auto;
     width: 180px;
-    max-width: 100%;
     height: auto;
   }
 
-  .footer-trustpilot .trust-text {
-    margin-top: 10px;
-    font-size: 14px;
+  #tp-bloque .tp-texto {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    font-size: 16px;
     line-height: 1.4;
+    color: {{ section.settings.text_color }};
   }
 
-  .footer-trustpilot .trust-text p {
-    margin: 0;
-  }
-
-  /* ========== LOGO MÓVIL ========== */
-  .footer-logo-mobile {
-    display: none;
-  }
-
-  /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
     .footer-logo {
       display: none;
@@ -390,20 +382,26 @@
       justify-content: flex-start;
     }
 
-    .footer-trustpilot img {
+    #tp-bloque img {
       width: 150px;
+    }
+
+    #tp-bloque .tp-texto {
+      display: block;
+      margin-left: 0;
+      margin-top: 10px;
+      text-align: center;
     }
   }
 </style>
 
 <footer class="footer-mustang">
-  
-  <!-- SECCIÓN SUPERIOR -->
+
   <div class="footer-top-section">
     <div class="page-width">
       <div class="footer-inner">
         <div class="footer-top">
-          
+
           <div class="footer-logo">
             {% if section.settings.logo != blank %}
               <div class="logo-img">
@@ -414,9 +412,8 @@
                 Sube tu logo aquí
               </div>
             {% endif %}
-            
             <div class="country">
-              Estás comprando en: 
+              Estás comprando en:
               {%- case localization.country.iso_code -%}
                 {%- when 'ES' -%}España
                 {%- when 'GB' -%}Inglaterra
@@ -434,18 +431,18 @@
               {%- endcase -%}
             </div>
           </div>
-          
+
           <div class="footer-newsletter">
             <h3>{{ section.settings.newsletter_title }}</h3>
             <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
-            
+
             <div class="checkbox">
               <label>
                 <input type="checkbox" id="newsletter_consent">
                 <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
               </label>
             </div>
-            
+
             {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
               <input type="hidden" name="contact[tags]" value="newsletter">
               <div class="email-field">
@@ -455,13 +452,12 @@
               <button type="submit">{{ section.settings.button_text }}</button>
             {%- endform -%}
           </div>
-          
+
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MENÚS -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-menus">
@@ -481,7 +477,7 @@
             </div>
           {%- endif -%}
         {%- endfor -%}
-        
+
         <div class="footer-menu-col">
           <h3 class="menu-title">{{ section.settings.service_title }}</h3>
           <div class="plain-text">
@@ -495,7 +491,6 @@
     </div>
   </div>
 
-  <!-- COPYRIGHT -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-copyright">
@@ -504,23 +499,6 @@
     </div>
   </div>
 
-  <!-- TRUSTPILOT - CENTRADO -->
-  <div class="page-width">
-    <div class="footer-inner">
-      <div class="footer-trustpilot">
-        <div class="trust-content">
-          {% if section.settings.trustpilot_image != blank %}
-            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-          {% endif %}
-          <div class="trust-text">
-            {{ section.settings.trustpilot_text }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LOGO MÓVIL -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-logo-mobile">
@@ -532,7 +510,7 @@
           <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
         {% endif %}
         <div class="country">
-          Estás comprando en: 
+          Estás comprando en:
           {%- case localization.country.iso_code -%}
             {%- when 'ES' -%}España
             {%- when 'GB' -%}Inglaterra
@@ -552,12 +530,24 @@
       </div>
     </div>
   </div>
+
 </footer>
+
+<!-- TRUSTPILOT - se inserta via JS directamente en body -->
+<div id="tp-bloque">
+  {% if section.settings.trustpilot_image != blank %}
+    <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+  {% endif %}
+  {% if section.settings.trustpilot_text != blank %}
+    <div class="tp-texto">{{ section.settings.trustpilot_text }}</div>
+  {% endif %}
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+    // Acordeón móvil
     var menuCols = document.querySelectorAll('.footer-menu-col');
-    
     menuCols.forEach(function(col) {
       var title = col.querySelector('.menu-title');
       if (title) {
@@ -566,6 +556,30 @@
         });
       }
     });
+
+    // Trustpilot: mover al body y posicionar justo después del footer
+    var tp = document.getElementById('tp-bloque');
+    var footer = document.querySelector('.footer-mustang');
+
+    if (tp && footer) {
+      // Sacar del lugar actual e insertar justo después del footer
+      footer.parentNode.insertBefore(tp, footer.nextSibling);
+
+      // Quitar position fixed y forzar estilos de bloque centrado
+      tp.style.cssText = [
+        'display: block',
+        'width: 100%',
+        'text-align: center',
+        'background-color: {{ section.settings.bg_color }}',
+        'padding: 20px 0 30px 0',
+        'margin: 0',
+        'float: none',
+        'clear: both',
+        'position: static',
+        'box-sizing: border-box'
+      ].join(' !important;') + ' !important;';
+    }
+
   });
 </script>
 
@@ -666,7 +680,7 @@
     },
     {
       "type": "header",
-      "content": "Atención al cliente"
+      "content": "Atención al cliente (texto plano)"
     },
     {
       "type": "text",
