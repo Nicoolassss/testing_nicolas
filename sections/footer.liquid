@@ -247,23 +247,22 @@
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
-  /* ========== TRUSTPILOT - CENTRADO Y DEBAJO DE TODO ========== */
-  .footer-trustpilot-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-    margin-bottom: 30px;
-    text-align: center;
+  /* ========== TRUSTPILOT - CENTRADO FORZADO ========== */
+  .trustpilot-wrapper {
+    text-align: center !important;
+    margin-top: 40px !important;
+    margin-bottom: 30px !important;
+    width: 100% !important;
+    display: block !important;
   }
-
+  
   .footer-trustpilot {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    text-align: center !important;
+    margin: 0 auto !important;
   }
 
   .footer-trustpilot .trust-text {
@@ -276,7 +275,6 @@
     margin: 0;
   }
 
-  /* Imagen más grande - tamaño fijo grande */
   .footer-trustpilot img {
     width: 180px;
     max-width: 180px;
@@ -399,12 +397,6 @@
 
     .footer-newsletter .checkbox label {
       justify-content: flex-start;
-    }
-
-    /* Trustpilot en móvil */
-    .footer-trustpilot-container {
-      margin-top: 30px;
-      margin-bottom: 20px;
     }
 
     .footer-trustpilot {
@@ -547,18 +539,14 @@
     </div>
   </div>
 
-  <!-- TRUSTPILOT - CENTRADO Y DEBAJO DE TODO -->
-  <div class="page-width">
-    <div class="footer-inner">
-      <div class="footer-trustpilot-container">
-        <div class="footer-trustpilot">
-          {% if section.settings.trustpilot_image != blank %}
-            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-          {% endif %}
-          <div class="trust-text">
-            {{ section.settings.trustpilot_text }}
-          </div>
-        </div>
+  <!-- TRUSTPILOT - CENTRADO FORZADO -->
+  <div class="trustpilot-wrapper">
+    <div class="footer-trustpilot">
+      {% if section.settings.trustpilot_image != blank %}
+        <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+      {% endif %}
+      <div class="trust-text">
+        {{ section.settings.trustpilot_text }}
       </div>
     </div>
   </div>
