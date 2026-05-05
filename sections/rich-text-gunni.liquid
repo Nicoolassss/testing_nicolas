@@ -1,0 +1,376 @@
+<style>
+  .rgt-section {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    text-align: {{ section.settings.text_align }};
+  }
+
+  .rgt-inner {
+    max-width: {{ section.settings.content_width }}px;
+    margin: 0 auto;
+  }
+
+  .rgt-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: {{ section.settings.eyebrow_color }};
+    margin: 0 0 20px 0;
+    font-weight: 400;
+  }
+
+  .rgt-title {
+    font-size: clamp(28px, 4vw, {{ section.settings.title_size }}px);
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    margin: 0 0 30px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .rgt-text {
+    font-size: {{ section.settings.text_size }}px;
+    color: {{ section.settings.text_color }};
+    line-height: 1.8;
+    margin: 0 auto 40px;
+    max-width: 700px;
+  }
+
+  .rgt-text p {
+    margin: 0 0 16px 0;
+  }
+
+  .rgt-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .rgt-button {
+    display: inline-block;
+    padding: 14px 40px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .rgt-button--primary {
+    background-color: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+    border-color: {{ section.settings.btn_bg }};
+  }
+
+  .rgt-button--primary:hover {
+    background-color: transparent;
+    color: {{ section.settings.btn_bg }};
+    border-color: {{ section.settings.btn_bg }};
+  }
+
+  .rgt-button--secondary {
+    background-color: transparent;
+    color: {{ section.settings.btn_bg }};
+    border-color: {{ section.settings.btn_bg }};
+  }
+
+  .rgt-button--secondary:hover {
+    background-color: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+  }
+
+  .rgt-divider {
+    width: 40px;
+    height: 1px;
+    background-color: {{ section.settings.title_color }};
+    margin: 0 auto 30px;
+    display: {{ section.settings.show_divider | default: 'block' }};
+  }
+
+  {% if section.settings.text_align == 'left' %}
+    .rgt-divider { margin-left: 0; }
+    .rgt-text { margin-left: 0; }
+  {% elsif section.settings.text_align == 'right' %}
+    .rgt-divider { margin-right: 0; margin-left: auto; }
+    .rgt-text { margin-left: auto; margin-right: 0; }
+  {% endif %}
+
+  @media (max-width: 768px) {
+    .rgt-title {
+      font-size: clamp(24px, 6vw, 36px);
+    }
+
+    .rgt-text {
+      font-size: 15px;
+    }
+
+    .rgt-button {
+      display: block;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 280px;
+    }
+
+    .rgt-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: {{ section.settings.text_align == 'left' ? 'flex-start' : section.settings.text_align == 'right' ? 'flex-end' : 'center' }};
+    }
+  }
+
+  @media (min-width: 769px) {
+    .rgt-buttons {
+      display: inline-flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: {{ section.settings.text_align == 'left' ? 'flex-start' : section.settings.text_align == 'right' ? 'flex-end' : 'center' }};
+    }
+  }
+</style>
+
+<section class="rgt-section">
+  <div class="rgt-inner">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="rgt-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.show_divider -%}
+      <div class="rgt-divider"></div>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <{{ section.settings.title_tag }} class="rgt-title">
+        {{ section.settings.title }}
+      </{{ section.settings.title_tag }}>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <div class="rgt-text">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.btn1_label != blank or section.settings.btn2_label != blank -%}
+      <div class="rgt-buttons">
+        {%- if section.settings.btn1_label != blank -%}
+          <a href="{{ section.settings.btn1_url }}" class="rgt-button rgt-button--primary">
+            {{ section.settings.btn1_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.btn2_label != blank -%}
+          <a href="{{ section.settings.btn2_url }}" class="rgt-button rgt-button--secondary">
+            {{ section.settings.btn2_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich Text Gunni",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto pequeño superior (eyebrow)",
+      "default": "Gunni & Trentino"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Mostrar línea divisora",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Gunni & Trentino"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Etiqueta HTML del título",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto descriptivo",
+      "default": "<p>Servicios integrales para proyectos de arquitectura e interiorismo. Llevamos 55 años transformando cada proyecto en una experiencia única, con soluciones completas que abarcan todas nuestras áreas de especialización.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Botones"
+    },
+    {
+      "type": "text",
+      "id": "btn1_label",
+      "label": "Botón 1 — Texto"
+    },
+    {
+      "type": "url",
+      "id": "btn1_url",
+      "label": "Botón 1 — Enlace"
+    },
+    {
+      "type": "text",
+      "id": "btn2_label",
+      "label": "Botón 2 — Texto"
+    },
+    {
+      "type": "url",
+      "id": "btn2_url",
+      "label": "Botón 2 — Enlace"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alineación",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Ancho máximo del contenido",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio superior",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio inferior",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Tipografía"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Grosor del título",
+      "options": [
+        { "value": "300", "label": "Ligero" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medio" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño del texto",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Fondo",
+      "default": "#f5f3ef"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Color eyebrow",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color título",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color texto",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Color botón",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Color texto botón",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich Text Gunni",
+      "settings": {
+        "eyebrow": "Gunni & Trentino",
+        "title": "Gunni & Trentino",
+        "text": "<p>Servicios integrales para proyectos de arquitectura e interiorismo. Llevamos 55 años transformando cada proyecto en una experiencia única, con soluciones completas que abarcan todas nuestras áreas de especialización.</p>",
+        "text_align": "center",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    }
+  ]
+}
+{% endschema %}
