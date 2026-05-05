@@ -228,58 +228,44 @@
     display: none;
   }
 
-  <!-- COPYRIGHT + TRUSTPILOT CENTRADO -->
-<div class="page-width">
-  <div class="footer-inner">
-
-    <div class="footer-copyright">
-      {{ section.settings.copyright_text }}
-    </div>
-
-  </div>
-</div>
-
-<!-- TRUSTPILOT FORZADO FUERA DE CUALQUIER CONTENEDOR -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:30px; margin-bottom:30px;">
-  <tr>
-    <td align="center" valign="middle">
-      {% if section.settings.trustpilot_image != blank %}
-        <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot" style="width:180px; height:auto; display:inline-block;">
-      {% endif %}
-      {% if section.settings.trustpilot_text != blank %}
-        <div style="display:inline-block; vertical-align:middle; margin-left:15px; font-size:16px; line-height:1.4; color:{{ section.settings.text_color }};">
-          {{ section.settings.trustpilot_text }}
-        </div>
-      {% endif %}
-    </td>
-  </tr>
-</table>
-
-  .footer-trustpilot {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+  .footer-copyright {
+    margin-top: 60px;
+    padding-top: 30px;
+    text-align: center;
+    font-size: 10px;
+    color: {{ section.settings.text_color | append: 'aa' }};
+    border-top: 1px solid {{ section.settings.border_color }};
+    margin-bottom: 30px;
   }
 
-  .footer-trustpilot .trust-text {
+  #tp-bloque {
+    background-color: {{ section.settings.bg_color }};
+    padding: 20px 0 30px 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -200px;
+    width: 100%;
+    text-align: center;
+    z-index: 0;
+    transition: none;
+  }
+
+  #tp-bloque img {
+    display: inline-block;
+    width: 180px;
+    height: auto;
+  }
+
+  #tp-bloque .tp-texto {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
     font-size: 16px;
     line-height: 1.4;
-    text-align: left;
+    color: {{ section.settings.text_color }};
   }
 
-  .footer-trustpilot .trust-text p {
-    margin: 0;
-  }
-
-  .footer-trustpilot img {
-    width: 180px;
-    max-width: 180px;
-    height: auto;
-    display: block;
-  }
-
-  /* ========== MÓVIL ========== */
   @media (max-width: 768px) {
     .footer-logo {
       display: none;
@@ -396,31 +382,26 @@
       justify-content: flex-start;
     }
 
-    .footer-trustpilot {
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .footer-trustpilot .trust-text {
-      text-align: center;
-    }
-
-    .footer-trustpilot img {
+    #tp-bloque img {
       width: 150px;
-      max-width: 150px;
+    }
+
+    #tp-bloque .tp-texto {
+      display: block;
+      margin-left: 0;
+      margin-top: 10px;
+      text-align: center;
     }
   }
 </style>
 
 <footer class="footer-mustang">
 
-  <!-- SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL -->
   <div class="footer-top-section">
     <div class="page-width">
       <div class="footer-inner">
         <div class="footer-top">
 
-          <!-- Logo Mustang - IZQUIERDA -->
           <div class="footer-logo">
             {% if section.settings.logo != blank %}
               <div class="logo-img">
@@ -451,7 +432,6 @@
             </div>
           </div>
 
-          <!-- Newsletter - DERECHA -->
           <div class="footer-newsletter">
             <h3>{{ section.settings.newsletter_title }}</h3>
             <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
@@ -478,7 +458,6 @@
     </div>
   </div>
 
-  <!-- SECCIÓN DE MENÚS -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-menus">
@@ -512,29 +491,14 @@
     </div>
   </div>
 
-  <!-- COPYRIGHT + TRUSTPILOT CENTRADO -->
   <div class="page-width">
     <div class="footer-inner">
-
       <div class="footer-copyright">
         {{ section.settings.copyright_text }}
       </div>
-
-      <div class="trustpilot-wrapper">
-        <div class="footer-trustpilot">
-          {% if section.settings.trustpilot_image != blank %}
-            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-          {% endif %}
-          <div class="trust-text">
-            {{ section.settings.trustpilot_text }}
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- Logo MÓVIL -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-logo-mobile">
@@ -569,8 +533,20 @@
 
 </footer>
 
+<!-- TRUSTPILOT - se inserta via JS directamente en body -->
+<div id="tp-bloque">
+  {% if section.settings.trustpilot_image != blank %}
+    <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+  {% endif %}
+  {% if section.settings.trustpilot_text != blank %}
+    <div class="tp-texto">{{ section.settings.trustpilot_text }}</div>
+  {% endif %}
+</div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+    // Acordeón móvil
     var menuCols = document.querySelectorAll('.footer-menu-col');
     menuCols.forEach(function(col) {
       var title = col.querySelector('.menu-title');
@@ -580,6 +556,30 @@
         });
       }
     });
+
+    // Trustpilot: mover al body y posicionar justo después del footer
+    var tp = document.getElementById('tp-bloque');
+    var footer = document.querySelector('.footer-mustang');
+
+    if (tp && footer) {
+      // Sacar del lugar actual e insertar justo después del footer
+      footer.parentNode.insertBefore(tp, footer.nextSibling);
+
+      // Quitar position fixed y forzar estilos de bloque centrado
+      tp.style.cssText = [
+        'display: block',
+        'width: 100%',
+        'text-align: center',
+        'background-color: {{ section.settings.bg_color }}',
+        'padding: 20px 0 30px 0',
+        'margin: 0',
+        'float: none',
+        'clear: both',
+        'position: static',
+        'box-sizing: border-box'
+      ].join(' !important;') + ' !important;';
+    }
+
   });
 </script>
 
