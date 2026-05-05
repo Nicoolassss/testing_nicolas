@@ -228,13 +228,14 @@
     display: none;
   }
 
+  /* Línea de copyright ELIMINADA - ya no tiene border-top */
   .footer-copyright {
     margin-top: 60px;
     padding-top: 30px;
     text-align: center;
     font-size: 10px;
     color: {{ section.settings.text_color | append: 'aa' }};
-    border-top: 1px solid {{ section.settings.border_color }};
+    /* border-top: 1px solid {{ section.settings.border_color }};  ELIMINADA */
   }
 
   .footer-trustpilot {
@@ -274,6 +275,7 @@
       display: block;
       margin-top: 40px;
       padding-top: 30px;
+      /* border-top ya no está en copyright, pero mantenemos esta para móvil del logo */
       border-top: 1px solid {{ section.settings.border_color }};
       text-align: center;
       width: 100%;
