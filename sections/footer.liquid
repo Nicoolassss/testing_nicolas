@@ -228,25 +228,32 @@
     display: none;
   }
 
-  /* ========== COPYRIGHT ========== */
-  .footer-copyright {
-    margin-top: 60px;
-    padding-top: 30px;
-    text-align: center;
-    font-size: 10px;
-    color: {{ section.settings.text_color | append: 'aa' }};
-    border-top: 1px solid {{ section.settings.border_color }};
-  }
+  <!-- COPYRIGHT + TRUSTPILOT CENTRADO -->
+<div class="page-width">
+  <div class="footer-inner">
 
-  /* ========== TRUSTPILOT ========== */
-  .trustpilot-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 100%;
-  }
+    <div class="footer-copyright">
+      {{ section.settings.copyright_text }}
+    </div>
+
+  </div>
+</div>
+
+<!-- TRUSTPILOT FORZADO FUERA DE CUALQUIER CONTENEDOR -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:30px; margin-bottom:30px;">
+  <tr>
+    <td align="center" valign="middle">
+      {% if section.settings.trustpilot_image != blank %}
+        <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot" style="width:180px; height:auto; display:inline-block;">
+      {% endif %}
+      {% if section.settings.trustpilot_text != blank %}
+        <div style="display:inline-block; vertical-align:middle; margin-left:15px; font-size:16px; line-height:1.4; color:{{ section.settings.text_color }};">
+          {{ section.settings.trustpilot_text }}
+        </div>
+      {% endif %}
+    </td>
+  </tr>
+</table>
 
   .footer-trustpilot {
     display: flex;
