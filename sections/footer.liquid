@@ -15,18 +15,15 @@
     padding: 0;
   }
 
-  /* Contenedor interno con padding lateral */
   .footer-inner {
     padding: 0 20px;
   }
 
-  /* ========== SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL ========== */
   .footer-top-section {
     width: 100%;
     position: relative;
   }
 
-  /* Línea HORIZONTAL - ancho completo */
   .footer-top-section::after {
     content: "";
     position: absolute;
@@ -48,7 +45,6 @@
     width: 100%;
   }
 
-  /* Línea VERTICAL - que llegue ARRIBA DEL TODO */
   .footer-top::before {
     content: "";
     position: absolute;
@@ -60,7 +56,6 @@
     transform: translateX(-50%);
   }
 
-  /* ========== MENÚS (SIN LÍNEAS) ========== */
   .footer-menus {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -101,7 +96,6 @@
     text-decoration: underline;
   }
 
-  /* Estilo para texto plano (Atención al cliente) */
   .plain-text {
     font-size: 13px;
     line-height: 1.6;
@@ -118,7 +112,6 @@
     margin-top: 15px;
   }
 
-  /* ========== PARTE SUPERIOR ========== */
   .footer-logo {
     flex: 1;
     text-align: left;
@@ -141,7 +134,6 @@
     margin-top: 10px;
   }
 
-  /* Newsletter - Derecha */
   .footer-newsletter {
     flex: 1;
     text-align: left;
@@ -232,12 +224,11 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* Logo móvil (oculto en desktop) */
   .footer-logo-mobile {
     display: none;
   }
 
-  /* ========== COPYRIGHT (centrado) ========== */
+  /* ========== COPYRIGHT ========== */
   .footer-copyright {
     margin-top: 60px;
     padding-top: 30px;
@@ -247,24 +238,21 @@
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
-  /* ========== TRUSTPILOT - CENTRADO FORZADO ========== */
+  /* ========== TRUSTPILOT ========== */
   .trustpilot-wrapper {
-    text-align: center !important;
-    margin-top: 40px !important;
-    margin-bottom: 30px !important;
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+
   .footer-trustpilot {
-    display: inline-flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 20px !important;
-    text-align: center !important;
-    margin: 0 auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
   }
 
   .footer-trustpilot .trust-text {
@@ -284,7 +272,7 @@
     display: block;
   }
 
-  /* ========== ESTILOS PARA MÓVIL ========== */
+  /* ========== MÓVIL ========== */
   @media (max-width: 768px) {
     .footer-logo {
       display: none;
@@ -418,13 +406,13 @@
 </style>
 
 <footer class="footer-mustang">
-  
+
   <!-- SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL -->
   <div class="footer-top-section">
     <div class="page-width">
       <div class="footer-inner">
         <div class="footer-top">
-          
+
           <!-- Logo Mustang - IZQUIERDA -->
           <div class="footer-logo">
             {% if section.settings.logo != blank %}
@@ -436,53 +424,38 @@
                 Sube tu logo aquí
               </div>
             {% endif %}
-            
-            <!-- TEXTO DE PAÍS DINÁMICO -->
             <div class="country">
-              Estás comprando en: 
+              Estás comprando en:
               {%- case localization.country.iso_code -%}
-                {%- when 'ES' -%}
-                  España
-                {%- when 'GB' -%}
-                  Inglaterra
-                {%- when 'US' -%}
-                  Estados Unidos
-                {%- when 'FR' -%}
-                  Francia
-                {%- when 'DE' -%}
-                  Alemania
-                {%- when 'IT' -%}
-                  Italia
-                {%- when 'PT' -%}
-                  Portugal
-                {%- when 'MX' -%}
-                  México
-                {%- when 'AR' -%}
-                  Argentina
-                {%- when 'CO' -%}
-                  Colombia
-                {%- when 'CL' -%}
-                  Chile
-                {%- when 'PE' -%}
-                  Perú
-                {%- else -%}
-                  {{ localization.country.name }}
+                {%- when 'ES' -%}España
+                {%- when 'GB' -%}Inglaterra
+                {%- when 'US' -%}Estados Unidos
+                {%- when 'FR' -%}Francia
+                {%- when 'DE' -%}Alemania
+                {%- when 'IT' -%}Italia
+                {%- when 'PT' -%}Portugal
+                {%- when 'MX' -%}México
+                {%- when 'AR' -%}Argentina
+                {%- when 'CO' -%}Colombia
+                {%- when 'CL' -%}Chile
+                {%- when 'PE' -%}Perú
+                {%- else -%}{{ localization.country.name }}
               {%- endcase -%}
             </div>
           </div>
-          
+
           <!-- Newsletter - DERECHA -->
           <div class="footer-newsletter">
             <h3>{{ section.settings.newsletter_title }}</h3>
             <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
-            
+
             <div class="checkbox">
               <label>
                 <input type="checkbox" id="newsletter_consent">
                 <span class="checkbox-text">{{ section.settings.checkbox_text }}</span>
               </label>
             </div>
-            
+
             {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form' -%}
               <input type="hidden" name="contact[tags]" value="newsletter">
               <div class="email-field">
@@ -492,13 +465,13 @@
               <button type="submit">{{ section.settings.button_text }}</button>
             {%- endform -%}
           </div>
-          
+
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN DE MENÚS (SIN LÍNEAS) -->
+  <!-- SECCIÓN DE MENÚS -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-menus">
@@ -518,7 +491,7 @@
             </div>
           {%- endif -%}
         {%- endfor -%}
-        
+
         <div class="footer-menu-col">
           <h3 class="menu-title">{{ section.settings.service_title }}</h3>
           <div class="plain-text">
@@ -532,24 +505,25 @@
     </div>
   </div>
 
-  <!-- COPYRIGHT (centrado) -->
+  <!-- COPYRIGHT + TRUSTPILOT CENTRADO -->
   <div class="page-width">
     <div class="footer-inner">
+
       <div class="footer-copyright">
         {{ section.settings.copyright_text }}
       </div>
-    </div>
-  </div>
 
-  <!-- TRUSTPILOT - CENTRADO FORZADO -->
-  <div class="trustpilot-wrapper">
-    <div class="footer-trustpilot">
-      {% if section.settings.trustpilot_image != blank %}
-        <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
-      {% endif %}
-      <div class="trust-text">
-        {{ section.settings.trustpilot_text }}
+      <div class="trustpilot-wrapper">
+        <div class="footer-trustpilot">
+          {% if section.settings.trustpilot_image != blank %}
+            <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
+          {% endif %}
+          <div class="trust-text">
+            {{ section.settings.trustpilot_text }}
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -565,45 +539,32 @@
           <div style="font-size: 24px; font-weight: bold;">MUSTANG</div>
         {% endif %}
         <div class="country">
-          Estás comprando en: 
+          Estás comprando en:
           {%- case localization.country.iso_code -%}
-            {%- when 'ES' -%}
-              España
-            {%- when 'GB' -%}
-              Inglaterra
-            {%- when 'US' -%}
-              Estados Unidos
-            {%- when 'FR' -%}
-              Francia
-            {%- when 'DE' -%}
-              Alemania
-            {%- when 'IT' -%}
-              Italia
-            {%- when 'PT' -%}
-              Portugal
-            {%- when 'MX' -%}
-              México
-            {%- when 'AR' -%}
-              Argentina
-            {%- when 'CO' -%}
-              Colombia
-            {%- when 'CL' -%}
-              Chile
-            {%- when 'PE' -%}
-              Perú
-            {%- else -%}
-              {{ localization.country.name }}
+            {%- when 'ES' -%}España
+            {%- when 'GB' -%}Inglaterra
+            {%- when 'US' -%}Estados Unidos
+            {%- when 'FR' -%}Francia
+            {%- when 'DE' -%}Alemania
+            {%- when 'IT' -%}Italia
+            {%- when 'PT' -%}Portugal
+            {%- when 'MX' -%}México
+            {%- when 'AR' -%}Argentina
+            {%- when 'CO' -%}Colombia
+            {%- when 'CL' -%}Chile
+            {%- when 'PE' -%}Perú
+            {%- else -%}{{ localization.country.name }}
           {%- endcase -%}
         </div>
       </div>
     </div>
   </div>
+
 </footer>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var menuCols = document.querySelectorAll('.footer-menu-col');
-    
     menuCols.forEach(function(col) {
       var title = col.querySelector('.menu-title');
       if (title) {
