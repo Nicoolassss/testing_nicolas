@@ -15,18 +15,16 @@
     padding: 0;
   }
 
-  /* Contenedor interno con padding lateral */
   .footer-inner {
     padding: 0 20px;
   }
 
-  /* ========== SECCIÓN SUPERIOR CON LÍNEA HORIZONTAL Y VERTICAL ========== */
+  /* ========== SECCIÓN SUPERIOR ========== */
   .footer-top-section {
     width: 100%;
     position: relative;
   }
 
-  /* Línea HORIZONTAL - ancho completo */
   .footer-top-section::after {
     content: "";
     position: absolute;
@@ -48,7 +46,6 @@
     width: 100%;
   }
 
-  /* Línea VERTICAL */
   .footer-top::before {
     content: "";
     position: absolute;
@@ -117,7 +114,7 @@
     margin-top: 15px;
   }
 
-  /* ========== PARTE SUPERIOR ========== */
+  /* ========== LOGO ========== */
   .footer-logo {
     flex: 1;
     text-align: left;
@@ -140,7 +137,7 @@
     margin-top: 10px;
   }
 
-  /* Newsletter */
+  /* ========== NEWSLETTER ========== */
   .footer-newsletter {
     flex: 1;
     text-align: left;
@@ -231,11 +228,6 @@
     color: {{ section.settings.bg_color }};
   }
 
-  /* Logo móvil */
-  .footer-logo-mobile {
-    display: none;
-  }
-
   /* ========== COPYRIGHT ========== */
   .footer-copyright {
     margin-top: 60px;
@@ -246,38 +238,42 @@
     border-top: 1px solid {{ section.settings.border_color }};
   }
 
-  /* ========== TRUSTPILOT - CENTRADO CON display: block ========== */
+  /* ========== TRUSTPILOT - CENTRADO ========== */
   .footer-trustpilot {
     margin-top: 40px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
-    width: 100%;
   }
 
-  .footer-trustpilot .trust-inner {
+  .footer-trustpilot .trust-content {
     display: inline-block;
     text-align: center;
   }
 
   .footer-trustpilot img {
     display: block;
-    margin: 0 auto 15px;
+    margin: 0 auto;
     width: 180px;
-    max-width: 180px;
+    max-width: 100%;
     height: auto;
   }
 
   .footer-trustpilot .trust-text {
+    margin-top: 10px;
     font-size: 14px;
     line-height: 1.4;
-    text-align: center;
   }
 
   .footer-trustpilot .trust-text p {
     margin: 0;
   }
 
-  /* ========== ESTILOS PARA MÓVIL ========== */
+  /* ========== LOGO MÓVIL ========== */
+  .footer-logo-mobile {
+    display: none;
+  }
+
+  /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
     .footer-logo {
       display: none;
@@ -396,7 +392,6 @@
 
     .footer-trustpilot img {
       width: 150px;
-      max-width: 150px;
     }
   }
 </style>
@@ -409,7 +404,6 @@
       <div class="footer-inner">
         <div class="footer-top">
           
-          <!-- Logo Mustang -->
           <div class="footer-logo">
             {% if section.settings.logo != blank %}
               <div class="logo-img">
@@ -424,37 +418,23 @@
             <div class="country">
               Estás comprando en: 
               {%- case localization.country.iso_code -%}
-                {%- when 'ES' -%}
-                  España
-                {%- when 'GB' -%}
-                  Inglaterra
-                {%- when 'US' -%}
-                  Estados Unidos
-                {%- when 'FR' -%}
-                  Francia
-                {%- when 'DE' -%}
-                  Alemania
-                {%- when 'IT' -%}
-                  Italia
-                {%- when 'PT' -%}
-                  Portugal
-                {%- when 'MX' -%}
-                  México
-                {%- when 'AR' -%}
-                  Argentina
-                {%- when 'CO' -%}
-                  Colombia
-                {%- when 'CL' -%}
-                  Chile
-                {%- when 'PE' -%}
-                  Perú
-                {%- else -%}
-                  {{ localization.country.name }}
+                {%- when 'ES' -%}España
+                {%- when 'GB' -%}Inglaterra
+                {%- when 'US' -%}Estados Unidos
+                {%- when 'FR' -%}Francia
+                {%- when 'DE' -%}Alemania
+                {%- when 'IT' -%}Italia
+                {%- when 'PT' -%}Portugal
+                {%- when 'MX' -%}México
+                {%- when 'AR' -%}Argentina
+                {%- when 'CO' -%}Colombia
+                {%- when 'CL' -%}Chile
+                {%- when 'PE' -%}Perú
+                {%- else -%}{{ localization.country.name }}
               {%- endcase -%}
             </div>
           </div>
           
-          <!-- Newsletter -->
           <div class="footer-newsletter">
             <h3>{{ section.settings.newsletter_title }}</h3>
             <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
@@ -524,11 +504,11 @@
     </div>
   </div>
 
-  <!-- TRUSTPILOT - CENTRADO CON display: block / margin: auto -->
+  <!-- TRUSTPILOT - CENTRADO -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-trustpilot">
-        <div class="trust-inner">
+        <div class="trust-content">
           {% if section.settings.trustpilot_image != blank %}
             <img src="{{ section.settings.trustpilot_image | img_url: 'master' }}" alt="Trustpilot">
           {% endif %}
@@ -540,7 +520,7 @@
     </div>
   </div>
 
-  <!-- Logo MÓVIL -->
+  <!-- LOGO MÓVIL -->
   <div class="page-width">
     <div class="footer-inner">
       <div class="footer-logo-mobile">
@@ -554,32 +534,19 @@
         <div class="country">
           Estás comprando en: 
           {%- case localization.country.iso_code -%}
-            {%- when 'ES' -%}
-              España
-            {%- when 'GB' -%}
-              Inglaterra
-            {%- when 'US' -%}
-              Estados Unidos
-            {%- when 'FR' -%}
-              Francia
-            {%- when 'DE' -%}
-              Alemania
-            {%- when 'IT' -%}
-              Italia
-            {%- when 'PT' -%}
-              Portugal
-            {%- when 'MX' -%}
-              México
-            {%- when 'AR' -%}
-              Argentina
-            {%- when 'CO' -%}
-              Colombia
-            {%- when 'CL' -%}
-              Chile
-            {%- when 'PE' -%}
-              Perú
-            {%- else -%}
-              {{ localization.country.name }}
+            {%- when 'ES' -%}España
+            {%- when 'GB' -%}Inglaterra
+            {%- when 'US' -%}Estados Unidos
+            {%- when 'FR' -%}Francia
+            {%- when 'DE' -%}Alemania
+            {%- when 'IT' -%}Italia
+            {%- when 'PT' -%}Portugal
+            {%- when 'MX' -%}México
+            {%- when 'AR' -%}Argentina
+            {%- when 'CO' -%}Colombia
+            {%- when 'CL' -%}Chile
+            {%- when 'PE' -%}Perú
+            {%- else -%}{{ localization.country.name }}
           {%- endcase -%}
         </div>
       </div>
