@@ -13,7 +13,7 @@
   .rgt-eyebrow {
     font-family: inherit;
     font-size: 11px;
-    letter-spacing: 4px;
+    letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
     text-transform: uppercase;
     color: {{ section.settings.eyebrow_color }};
     margin: 0 0 25px 0;
@@ -27,7 +27,7 @@
     color: {{ section.settings.title_color }};
     margin: 0 0 35px 0;
     line-height: 1.15;
-    letter-spacing: 2px;
+    letter-spacing: {{ section.settings.title_letter_spacing }}px;
   }
 
   .rgt-text {
@@ -37,6 +37,7 @@
     line-height: 1.9;
     margin: 0 auto 0;
     max-width: 600px;
+    letter-spacing: {{ section.settings.text_letter_spacing }}px;
   }
 
   .rgt-text p {
@@ -65,7 +66,6 @@
   @media (max-width: 768px) {
     .rgt-title {
       font-size: clamp(24px, 6vw, 36px);
-      letter-spacing: 1px;
     }
     .rgt-text {
       font-size: 15px;
@@ -131,7 +131,13 @@
       "options": [
         { "value": "h1", "label": "H1" },
         { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" },
+        { "value": "p", "label": "Párrafo (p)" },
+        { "value": "span", "label": "Span" },
+        { "value": "div", "label": "Div" }
       ],
       "default": "h2"
     },
@@ -202,6 +208,16 @@
     },
     {
       "type": "range",
+      "id": "title_letter_spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Espacio entre letras — Título",
+      "default": 2
+    },
+    {
+      "type": "range",
       "id": "text_size",
       "min": 12,
       "max": 22,
@@ -209,6 +225,26 @@
       "unit": "px",
       "label": "Tamaño del texto",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_letter_spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Espacio entre letras — Texto",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Espacio entre letras — Eyebrow",
+      "default": 4
     },
     {
       "type": "header",
